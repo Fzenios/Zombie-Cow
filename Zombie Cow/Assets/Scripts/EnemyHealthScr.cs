@@ -5,7 +5,8 @@ using UnityEngine;
 public class EnemyHealthScr : MonoBehaviour
 {
     public float MaxHp, CurrentHp;
-    public float EnemyDmg;
+    public float EnemyTouchDmg;
+    
     void Start()
     {
         CurrentHp = MaxHp;
@@ -18,16 +19,18 @@ public class EnemyHealthScr : MonoBehaviour
 
     public void TakeDmg(float Damage, string TypeDmg)
     {
-        if(TypeDmg == "Range")
-            CurrentHp -= Damage;
-        if(TypeDmg == "Melee")
-        {
-            CurrentHp -= Damage;
-        }
+        
+            if(TypeDmg == "Range")
+                CurrentHp -= Damage;
+            if(TypeDmg == "Melee")
+            {
+                CurrentHp -= Damage;
+            }
         
         if(CurrentHp <= 0)
             Destroy(gameObject);
     }
+    
     
     void OnTriggerEnter2D(Collider2D other) 
     {
@@ -37,7 +40,7 @@ public class EnemyHealthScr : MonoBehaviour
     {
         if(other.transform.tag == "Player")
         {
-            other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(EnemyDmg);
+            other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(EnemyTouchDmg);
         }           
     }
 }

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class MilkScr : MonoBehaviour
 {
-    public float MilkSpeed;
-    float Direction; 
     Rigidbody2D MilkRb;
     public float MilkDmg;
     void Start()

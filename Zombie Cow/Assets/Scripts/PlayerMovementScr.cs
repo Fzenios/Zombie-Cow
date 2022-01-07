@@ -8,7 +8,7 @@ public class PlayerMovementScr : MonoBehaviour
     public float MoveSpeed, JumpSpeed;
     public float JumpReset;
     public float JumpResetCur;
-
+    public float DashDmg;
     BoxCollider2D PlayerBox;
     [SerializeField]
     LayerMask groundLayer;
@@ -16,6 +16,8 @@ public class PlayerMovementScr : MonoBehaviour
     public Vector2 DashSpeed;
     bool CanDash;
     public bool isDashing;
+    Coroutine Dashmove;
+    float Movement;
     void Start()
     {
         PlayerRb = GetComponent<Rigidbody2D>();
@@ -29,9 +31,14 @@ public class PlayerMovementScr : MonoBehaviour
     }
     void FixedUpdate() 
     {
-        if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
-            if(!isDashing)
-                PlayerRb.velocity = new Vector2(Input.GetAxis("Horizontal") * MoveSpeed, PlayerRb.velocity.y); 
+        
+           
+           //Movement = Input.GetAxis("Horizontal") * MoveSpeed;
+              //  PlayerRb.velocity = new Vector2(Movement, PlayerRb.velocity.y);
+                if(!isDashing)
+                    PlayerRb.velocity = new Vector2(Input.GetAxis("Horizontal") * MoveSpeed, PlayerRb.velocity.y); 
+            
+                //PlayerRb.velocity = new Vector2(0f, 0f);
         
         if(Input.GetKey(KeyCode.Space))
         {
@@ -48,9 +55,9 @@ public class PlayerMovementScr : MonoBehaviour
         if(CanDash)
         {
             if(Input.GetKey(DashKey) && Input.GetKey(KeyCode.D))
-                StartCoroutine(DashMove(1));
+                Dashmove = StartCoroutine(DashMove(1));
             else if(Input.GetKey(DashKey) && Input.GetKey(KeyCode.A))
-                StartCoroutine(DashMove(-1));
+                Dashmove = StartCoroutine(DashMove(-1));
         }
 
         if(isGrounded())
@@ -69,7 +76,7 @@ public class PlayerMovementScr : MonoBehaviour
     {
         isDashing = true;
         CanDash = false;
-        PlayerRb.velocity = new Vector2(PlayerRb.velocity.x, 0f);
+        PlayerRb.velocity = new Vector2(0f, 0f);
         if(Dir == 1)
             PlayerRb.AddForce(DashSpeed, ForceMode2D.Impulse);
         else 
@@ -80,6 +87,19 @@ public class PlayerMovementScr : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         CanDash = true;
         isDashing = false;
+    }
+    void OnCollisionEnter2D(Collision2D other) 
+    {
+        if(other.transform.tag == "Enemy" && isDashing)
+        {
+            StopCoroutine(Dashmove);
+
+            other.transform.GetComponent<EnemyHealthScr>().TakeDmg(DashDmg, "Melee");  
+
+            CanDash = true;
+            isDashing = false;
+            PlayerRb.gravityScale = 3;
+        }        
     }
     
 }

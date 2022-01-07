@@ -8,11 +8,14 @@ public class PlayerHealthScr : MonoBehaviour
     public float HpMax, HpCurrent;
     public float DashDmg;
     public TMP_Text HealthTxt;
+    public bool Invincible;
     PlayerMovementScr playerMovementScr;
+    
     void Start()
     {
         playerMovementScr = GetComponent<PlayerMovementScr>();
         HpCurrent = HpMax;
+        Invincible = false;
     }
 
     void Update()
@@ -21,9 +24,20 @@ public class PlayerHealthScr : MonoBehaviour
     }
     public void TakeDmg(float Damage)
     {
-        HpCurrent -= Damage;
-        if(HpCurrent <= 0)
-            Destroy(gameObject);
+        if(!Invincible)
+        {
+            HpCurrent -= Damage;
+            if(HpCurrent <= 0)
+                Destroy(gameObject);
+
+            Invincible = true;
+            StartCoroutine(InvincibleStat());
+        }
+    }
+    IEnumerator InvincibleStat()
+    {
+        yield return new WaitForSeconds(3);
+        Invincible = false;
     }
     void OnTriggerEnter2D(Collider2D other) 
     {
@@ -33,8 +47,7 @@ public class PlayerHealthScr : MonoBehaviour
     {
         if(other.collider.tag == "Enemy")
         {
-            if(playerMovementScr.isDashing)
-                other.transform.GetComponent<EnemyHealthScr>().TakeDmg(DashDmg, "Melee");                    
+                             
         }
     }
 }
