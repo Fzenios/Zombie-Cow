@@ -21,6 +21,12 @@ public class MilkScr : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        if(other.tag == "Boss")
+        {
+            other.GetComponent<EnemyBoss1Scr>().TakeDmg(MilkDmg,"Range");        
+            Destroy(gameObject);
+            return;
+        }
         if(other.tag != "Player" && other.tag != "Milk"  )
             Destroy(gameObject);
         

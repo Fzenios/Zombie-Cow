@@ -45,9 +45,9 @@ public class PlayerHealthScr : MonoBehaviour
     }
     void OnCollisionEnter2D(Collision2D other) 
     {
-        if(other.collider.tag == "Enemy")
+        if(other.collider.tag == "Trap")
         {
-                             
+            Destroy(gameObject);                             
         }
     }
 }

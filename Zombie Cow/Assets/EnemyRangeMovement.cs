@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyRangeMovement : MonoBehaviour
 {
     Transform PlayerPos;
+    Rigidbody2D EnemyRb;
     public float EnemySafeDistance, EnemyUnSafeDistance;
     public float EnemySpeed;
     float Distance;
@@ -14,6 +15,7 @@ public class EnemyRangeMovement : MonoBehaviour
     public float drawline;
     void Start()
     {
+        EnemyRb = GetComponent<Rigidbody2D>();
         PlayerPos = GameObject.FindGameObjectWithTag("Player").transform;
         FightStart = false;
     }
@@ -23,8 +25,14 @@ public class EnemyRangeMovement : MonoBehaviour
         
         Debug.DrawLine(transform.position, new Vector3(transform.position.x + drawline, transform.position.y, transform.position.z), Color.cyan);
         DistanceWithPlayer = Vector2.Distance(transform.position,PlayerPos.position);
+        
         if(DistanceWithPlayer < DistanceToActivate)
             FightStart = true;
+        else 
+        {
+            FightStart = false;
+            EnemyRb.velocity = new Vector2(0f, 0f);
+        }
 
         if(FightStart)
         {

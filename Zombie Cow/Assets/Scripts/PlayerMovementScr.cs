@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMovementScr : MonoBehaviour
 {
-    Rigidbody2D PlayerRb;
+    public Rigidbody2D PlayerRb;
     public float MoveSpeed, JumpSpeed;
     public float JumpReset;
     public float JumpResetCur;
@@ -18,6 +18,7 @@ public class PlayerMovementScr : MonoBehaviour
     public bool isDashing;
     Coroutine Dashmove;
     float Movement;
+    public bool EnemyPushed;
     void Start()
     {
         PlayerRb = GetComponent<Rigidbody2D>();
@@ -31,12 +32,13 @@ public class PlayerMovementScr : MonoBehaviour
     }
     void FixedUpdate() 
     {
-        
-           
            //Movement = Input.GetAxis("Horizontal") * MoveSpeed;
               //  PlayerRb.velocity = new Vector2(Movement, PlayerRb.velocity.y);
                 if(!isDashing)
-                    PlayerRb.velocity = new Vector2(Input.GetAxis("Horizontal") * MoveSpeed, PlayerRb.velocity.y); 
+                {
+                    if(!EnemyPushed)
+                        PlayerRb.velocity = new Vector2(Input.GetAxis("Horizontal") * MoveSpeed, PlayerRb.velocity.y); 
+                }
             
                 //PlayerRb.velocity = new Vector2(0f, 0f);
         

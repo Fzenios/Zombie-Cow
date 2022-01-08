@@ -12,6 +12,7 @@ public class EnemyShootScr : MonoBehaviour
     public Transform Player;
     public float Distance;
     public float EnemyDamage;
+    public EnemyRangeMovement enemyRangeMovement;
 
     void Start()
     {
@@ -21,13 +22,14 @@ public class EnemyShootScr : MonoBehaviour
     void Update()
     {
         Vector3 difference = Player.position - transform.position;
-        Distance = Player.position.x - transform.position.x;
+        //Distance = Player.position.x - transform.position.x;
+        Distance = Vector2.Distance(transform.position,Player.position);
         float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, rotZ );
 
         if(EnemyShootTimerCur >= EnemyShootTimer)
             {
-                if(Distance > -15 && Distance < 15)
+                if(Distance <= enemyRangeMovement.DistanceToActivate)
                     Shoot();
             }
         else

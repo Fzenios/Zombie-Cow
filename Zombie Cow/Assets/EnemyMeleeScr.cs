@@ -27,6 +27,11 @@ public class EnemyMeleeScr : MonoBehaviour
         DistanceWithPlayer = Vector2.Distance(transform.position,PlayerPos.position);
         if(DistanceWithPlayer < DistanceToActivate)
             FightStart = true;
+        else
+        {
+            FightStart = false;
+            EnemyRb.velocity = new Vector2(0f, 0f);
+        }
         
         if(FightStart)
         {

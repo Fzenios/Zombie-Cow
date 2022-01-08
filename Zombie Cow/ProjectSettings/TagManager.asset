@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Milk
   - Enemy
+  - Trap
+  - Boss
+  - Tail
   layers:
   - Default
   - TransparentFX
@@ -40,6 +43,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 425131889
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
