@@ -5,8 +5,8 @@ using UnityEngine;
 public class EnemyBulletScr : MonoBehaviour
 {
     Rigidbody2D BulletRb;
-    [HideInInspector]
-    public float BulletDmg;
+    [HideInInspector] public float BulletDmg;
+    public int Dir;
     void Start()
     {
         BulletRb = GetComponent<Rigidbody2D>();
@@ -18,7 +18,7 @@ public class EnemyBulletScr : MonoBehaviour
     {
         if(other.tag == "Player")
         {
-            other.GetComponent<PlayerHealthScr>().TakeDmg(BulletDmg);        
+            other.GetComponent<PlayerHealthScr>().TakeDmg(BulletDmg, Dir);        
             Destroy(gameObject);
             return;
         }

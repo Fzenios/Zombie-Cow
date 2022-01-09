@@ -14,12 +14,14 @@ public class EnemyMeleeScr : MonoBehaviour
     bool IsCharging;
     Rigidbody2D EnemyRb;
     public float ChargeDmg;
+    int Dir;
     void Start()
     {
         IsCharging = false;
         FightStart = false;
         PlayerPos = GameObject.FindGameObjectWithTag("Player").transform;
         EnemyRb = GetComponent<Rigidbody2D>();
+        Dir = 1;
     }
     void Update()
     {
@@ -53,9 +55,15 @@ public class EnemyMeleeScr : MonoBehaviour
 
             Distance = PlayerPos.position.x - transform.position.x;
             if(Distance < 0)
+            {
                 transform.localScale = new Vector3(1,1.5f,0); 
+                Dir = 1;
+            }
             else if(Distance > 0)
-                transform.localScale = new Vector3(-1,1.5f,0);   
+            {
+                transform.localScale = new Vector3(-1,1.5f,0);
+                Dir = -1;   
+            }
         }        
     }
     IEnumerator Charge()
@@ -74,7 +82,7 @@ public class EnemyMeleeScr : MonoBehaviour
     {
         if(other.transform.tag == "Player" && IsCharging)
         {
-            other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(ChargeDmg);
+            other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(ChargeDmg, Dir);
         }           
     }
 }

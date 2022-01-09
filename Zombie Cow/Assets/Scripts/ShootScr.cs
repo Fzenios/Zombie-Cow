@@ -12,12 +12,33 @@ public class ShootScr : MonoBehaviour
     public Transform ShootPos;
     public GameObject Milk;
     public float offset;
+    int Dir;
+    
+    void Start() 
+    {
+        Dir = 1;        
+    }
 
     void Update()
     {
         Vector3 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
         float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0f, 0f, rotZ + offset);
+        
+        if(Input.GetKey(KeyCode.D))
+            Dir = 1;
+        if(Input.GetKey(KeyCode.A))
+            Dir = -1;
+
+        if(Dir == 1)
+        {
+            offset = 0;
+            transform.rotation = Quaternion.Euler(0f, 0f, rotZ + offset); 
+        }
+        if(Dir == -1)
+        {
+            offset = 180;
+            transform.rotation = Quaternion.Euler(0f, 0f, rotZ - offset); 
+        }  
 
         if(CanShoot)
         {
@@ -35,7 +56,10 @@ public class ShootScr : MonoBehaviour
         ShootTimerCur = 0;
         GameObject MilkPre =  Instantiate(Milk, ShootPos.position, ShootPos.rotation);
         Rigidbody2D MilkRb = MilkPre.GetComponent<Rigidbody2D>();
-        MilkRb.AddForce(ShootPos.right * BulletSpeed, ForceMode2D.Force);
+        if(Dir == 1)
+            MilkRb.AddForce(ShootPos.right * BulletSpeed, ForceMode2D.Force);
+        else
+            MilkRb.AddForce(-ShootPos.right * BulletSpeed, ForceMode2D.Force);
     
     }
 }

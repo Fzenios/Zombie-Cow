@@ -1,20 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyHealthScr : MonoBehaviour
 {
     public float MaxHp, CurrentHp;
     public float EnemyTouchDmg;
+    public Slider HealthSlider;
+    float Distance;
+    Transform PlayerPos;
+    int Dir;
     
     void Start()
     {
         CurrentHp = MaxHp;
+        HealthSlider.maxValue = MaxHp;
+        PlayerPos = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     void Update()
     {
+        HealthSlider.value = CurrentHp;   
         
+        Distance = PlayerPos.position.x - transform.position.x;
+            if(Distance < 0)
+            {
+                Dir = 1;
+            } 
+            else if(Distance > 0)
+            {
+                Dir = -1;
+            }     
     }
 
     public void TakeDmg(float Damage, string TypeDmg)
@@ -40,7 +57,7 @@ public class EnemyHealthScr : MonoBehaviour
     {
         if(other.transform.tag == "Player")
         {
-            other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(EnemyTouchDmg);
+            other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(EnemyTouchDmg, Dir);
         }           
     }
 }

@@ -9,14 +9,14 @@ public class EnemyShootScr : MonoBehaviour
     public float BulletSpeed;
     public Transform ShootPos;
     public GameObject EnemyBullet;
-    public Transform Player;
+    Transform Player;
     public float Distance;
     public float EnemyDamage;
     public EnemyRangeMovement enemyRangeMovement;
 
     void Start()
     {
-        
+        Player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     void Update()
@@ -41,6 +41,7 @@ public class EnemyShootScr : MonoBehaviour
         EnemyShootTimerCur = 0;
         GameObject BulletPre =  Instantiate(EnemyBullet, ShootPos.position, ShootPos.rotation);
         BulletPre.GetComponent<EnemyBulletScr>().BulletDmg = EnemyDamage;
+        BulletPre.GetComponent<EnemyBulletScr>().Dir = enemyRangeMovement.Dir;
         Rigidbody2D BulletRb = BulletPre.GetComponent<Rigidbody2D>();
         BulletRb.AddForce(ShootPos.right * BulletSpeed, ForceMode2D.Force);
     }

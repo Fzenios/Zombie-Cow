@@ -13,6 +13,7 @@ public class EnemyRangeMovement : MonoBehaviour
     public float DistanceToActivate;
     float DistanceWithPlayer;
     public float drawline;
+    public int Dir;
     void Start()
     {
         EnemyRb = GetComponent<Rigidbody2D>();
@@ -43,9 +44,15 @@ public class EnemyRangeMovement : MonoBehaviour
             
             Distance = PlayerPos.position.x - transform.position.x;
             if(Distance < 0)
-                transform.localScale = new Vector3(1,1.5f,0); 
+            {
+                transform.localScale = new Vector3(1,1.5f,0);
+                Dir = 1;
+            } 
             else if(Distance > 0)
-                transform.localScale = new Vector3(-1,1.5f,0); 
+            {
+                transform.localScale = new Vector3(-1,1.5f,0);
+                Dir = -1;
+            } 
         }
     }
 }

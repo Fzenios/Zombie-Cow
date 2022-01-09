@@ -17,10 +17,15 @@ public class TailScr : MonoBehaviour
     public float WiggleMagnitude;
     public Transform WiggleDir;
     Transform BossPos;
+    GameObject Boss;
+    EnemyBoss1Scr enemyBoss1Scr;
     
     void Start()
     {
-        BossPos = GameObject.FindGameObjectWithTag("Boss").transform;
+        Boss = GameObject.FindGameObjectWithTag("Boss");
+        BossPos = Boss.transform;
+        enemyBoss1Scr = Boss.GetComponent<EnemyBoss1Scr>();
+
         LineRend.positionCount = Length;
         SegmentPoses = new Vector3[Length];
         SegmentV = new Vector3[Length];
@@ -46,11 +51,11 @@ public class TailScr : MonoBehaviour
         }
         LineRend.SetPositions(SegmentPoses);
     }
-    void OnCollisionEnter2D(Collision2D other) 
+    void OnTriggerEnter2D(Collider2D other) 
     {
         if(other.transform.tag == "Player")
         {
-            other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(TailDamage);
+            other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(TailDamage, enemyBoss1Scr.Dir);
             Destroy(gameObject);
         }        
     }

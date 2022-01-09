@@ -10,34 +10,62 @@ public class PlayerHealthScr : MonoBehaviour
     public TMP_Text HealthTxt;
     public bool Invincible;
     PlayerMovementScr playerMovementScr;
+    int Lookat;
+    Rigidbody2D PlayerRb;
+    public Vector3 ForceBack;
+    public Animator animator;
     
     void Start()
     {
         playerMovementScr = GetComponent<PlayerMovementScr>();
         HpCurrent = HpMax;
         Invincible = false;
+        Lookat = 1;
+        PlayerRb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
     {
         HealthTxt.text = HpCurrent.ToString();
+
+        /*if(Input.GetKey(KeyCode.D))
+            Lookat = 1;
+        if(Input.GetKey(KeyCode.A))
+            Lookat = -1;   */
     }
-    public void TakeDmg(float Damage)
+    public void TakeDmg(float Damage, int Dir)
     {
         if(!Invincible)
         {
+            Invincible = true;
+
             HpCurrent -= Damage;
+            
             if(HpCurrent <= 0)
                 Destroy(gameObject);
 
-            Invincible = true;
+            animator.SetTrigger("CamTrig");
+
+            if(Dir == 1)
+                PlayerRb.AddForce(ForceBack, ForceMode2D.Impulse);
+            else 
+                PlayerRb.AddForce(-ForceBack, ForceMode2D.Impulse);
+            
+            StartCoroutine(EnemyPushed());
+
             StartCoroutine(InvincibleStat());
         }
     }
     IEnumerator InvincibleStat()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(2);
         Invincible = false;
+    }
+    IEnumerator EnemyPushed()
+    {
+        playerMovementScr.EnemyPushed = true;
+        yield return new WaitForSeconds(0.5f);
+        playerMovementScr.EnemyPushed = false;
     }
     void OnTriggerEnter2D(Collider2D other) 
     {
