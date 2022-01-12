@@ -13,6 +13,8 @@ public class ShootScr : MonoBehaviour
     public GameObject Milk;
     public float offset;
     int Dir;
+    public Animator animator;
+    public PlayerMovementScr playerMovementScr;
     
     void Start() 
     {
@@ -39,16 +41,21 @@ public class ShootScr : MonoBehaviour
             offset = 180;
             transform.rotation = Quaternion.Euler(0f, 0f, rotZ - offset); 
         }  
-
-        if(CanShoot)
+        if(!playerMovementScr.isDashing)
         {
-            if(ShootTimerCur >= ShootTimer)
+            if(CanShoot)
             {
-                if(Input.GetKey(ShootKey))
-                    Shoot();
+                if(ShootTimerCur >= ShootTimer)
+                {
+                    if(Input.GetKey(ShootKey))
+                    {
+                        Shoot();
+                        animator.SetTrigger("Shoot");
+                    }
+                }
+                else
+                    ShootTimerCur += Time.deltaTime;
             }
-            else
-                ShootTimerCur += Time.deltaTime;
         }
     }
     void Shoot()

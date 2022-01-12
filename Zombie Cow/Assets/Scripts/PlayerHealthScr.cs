@@ -10,17 +10,16 @@ public class PlayerHealthScr : MonoBehaviour
     public TMP_Text HealthTxt;
     public bool Invincible;
     PlayerMovementScr playerMovementScr;
-    int Lookat;
     Rigidbody2D PlayerRb;
     public Vector3 ForceBack;
     public Animator animator;
+    public SpriteRenderer PlayerSprite;
     
     void Start()
     {
         playerMovementScr = GetComponent<PlayerMovementScr>();
         HpCurrent = HpMax;
         Invincible = false;
-        Lookat = 1;
         PlayerRb = GetComponent<Rigidbody2D>();
     }
 
@@ -58,6 +57,7 @@ public class PlayerHealthScr : MonoBehaviour
     }
     IEnumerator InvincibleStat()
     {
+        PlayerSprite.color = Color.
         yield return new WaitForSeconds(2);
         Invincible = false;
     }
