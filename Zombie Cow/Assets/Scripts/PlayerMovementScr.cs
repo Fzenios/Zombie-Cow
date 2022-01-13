@@ -13,21 +13,22 @@ public class PlayerMovementScr : MonoBehaviour
     [SerializeField] LayerMask groundLayer, EnemyLayer;
     public KeyCode DashKey;
     public Vector2 DashSpeed;
-    bool CanDash;
     public bool isDashing;
     Coroutine Dashmove;
-    float Movement;
+    //float Movement;
     public bool EnemyPushed;
     public EnemyBoss1Scr enemyBoss1Scr;
-    int Dir;
+    //int Dir;
     public Animator animator;
     public GameObject GunObj;
+    int JumpCounter;
     
     void Start()
     {
         PlayerRb = GetComponent<Rigidbody2D>();
         PlayerBox = GetComponent<BoxCollider2D>();      
         isDashing = false;  
+        JumpCounter = 0;
     }
     
     void Update() 
@@ -47,12 +48,12 @@ public class PlayerMovementScr : MonoBehaviour
         if(Input.GetKey(KeyCode.D) && !isDashing)
         {
             transform.localScale = new Vector3(1,1,1);
-            Dir = 1;
+           // Dir = 1;
         } 
         if(Input.GetKey(KeyCode.A) && !isDashing)
         {
             transform.localScale = new Vector3(-1,1,0);
-            Dir = -1;  
+           // Dir = -1;  
         }     
         if(isDashing)
             GunObj.SetActive(false);
@@ -78,11 +79,18 @@ public class PlayerMovementScr : MonoBehaviour
             {
                 PlayerRb.velocity = new Vector2(PlayerRb.velocity.x, JumpSpeed);
                 JumpResetCur += Time.deltaTime;
-                animator.SetBool("Jump", true);
+                JumpCounter++;
+                if(JumpCounter == 1)
+                    animator.SetBool("Jump", true);
+                else
+                    animator.SetTrigger("JumpTr");
             }
         }
         if(isGrounded() || isGrounded() || isDashing)
+        {
             animator.SetBool("Jump", false);
+            JumpCounter = 0;
+        }
     }
     bool isGrounded()
     {
@@ -109,7 +117,6 @@ public class PlayerMovementScr : MonoBehaviour
         PlayerRb.gravityScale = 3;
         yield return new WaitForSeconds(0.5f);
         animator.SetBool("Charge", false);
-        CanDash = true;
         isDashing = false;
     }
     void OnCollisionEnter2D(Collision2D other) 
@@ -121,7 +128,6 @@ public class PlayerMovementScr : MonoBehaviour
 
             other.transform.GetComponent<EnemyHealthScr>().TakeDmg(DashDmg, "Melee");  
 
-            CanDash = true;
             isDashing = false;
             PlayerRb.gravityScale = 3;
         }  
@@ -132,7 +138,6 @@ public class PlayerMovementScr : MonoBehaviour
 
             other.transform.GetComponent<EnemyBoss1Scr>().TakeDmg(DashDmg, "Melee");  
 
-            CanDash = true;
             isDashing = false;
             PlayerRb.gravityScale = 3;
         }  

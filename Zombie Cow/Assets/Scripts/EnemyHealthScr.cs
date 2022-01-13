@@ -11,12 +11,19 @@ public class EnemyHealthScr : MonoBehaviour
     float Distance;
     Transform PlayerPos;
     int Dir;
+    Animator animator;
+    BoxCollider2D Collider;
+    Rigidbody2D EnemyRb;
+    public EnemyMeleeScr enemyMeleeScr;
     
     void Start()
     {
         CurrentHp = MaxHp;
         HealthSlider.maxValue = MaxHp;
         PlayerPos = GameObject.FindGameObjectWithTag("Player").transform;
+        Collider = GetComponent<BoxCollider2D>();
+        EnemyRb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -36,18 +43,32 @@ public class EnemyHealthScr : MonoBehaviour
 
     public void TakeDmg(float Damage, string TypeDmg)
     {
-        
-            if(TypeDmg == "Range")
-                CurrentHp -= Damage;
-            if(TypeDmg == "Melee")
+        if(TypeDmg == "Range")
+        {
+            CurrentHp -= Damage;
+            if(CurrentHp <= 0)
             {
-                CurrentHp -= Damage;
+                animator.SetTrigger("Death");
+                Destroy(gameObject, 5);
+                Collider.enabled = false;
+                EnemyRb.gravityScale = 0;
+                enemyMeleeScr.enabled = false;
+                return;
             }
-        
-        if(CurrentHp <= 0)
-            Destroy(gameObject);
+        }
+        if(TypeDmg == "Melee")
+        {
+            CurrentHp -= Damage;
+            if(CurrentHp <= 0)
+            {
+                EnemyRb.velocity = new Vector2(0f, 0f);
+                animator.SetTrigger("DeathMetal");
+                Collider.enabled = false;
+                EnemyRb.gravityScale = 0;
+                enemyMeleeScr.enabled = false;
+            }
+        }    
     }
-    
     
     void OnTriggerEnter2D(Collider2D other) 
     {

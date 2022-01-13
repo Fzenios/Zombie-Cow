@@ -15,20 +15,26 @@ public class EnemyMeleeScr : MonoBehaviour
     Rigidbody2D EnemyRb;
     public float ChargeDmg;
     int Dir;
+    Animator animator;
     void Start()
     {
         IsCharging = false;
         FightStart = false;
         PlayerPos = GameObject.FindGameObjectWithTag("Player").transform;
         EnemyRb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         Dir = 1;
     }
     void Update()
     {
+        
         Debug.DrawLine(transform.position, new Vector3(transform.position.x + drawline, transform.position.y, transform.position.z), Color.cyan);
         DistanceWithPlayer = Vector2.Distance(transform.position,PlayerPos.position);
         if(DistanceWithPlayer < DistanceToActivate)
+        {
             FightStart = true;
+            animator.SetBool("Walk", false);
+        }
         else
         {
             FightStart = false;
@@ -37,6 +43,7 @@ public class EnemyMeleeScr : MonoBehaviour
         
         if(FightStart)
         {
+            animator.SetBool("Walk", true);
             if(Vector2.Distance(transform.position,PlayerPos.position) > EnemySafeDistance )
                 transform.position = Vector2.MoveTowards(transform.position, PlayerPos.position, Time.deltaTime * EnemySpeed);
             else if (Vector2.Distance(transform.position,PlayerPos.position) < EnemyUnSafeDistance )
@@ -48,20 +55,21 @@ public class EnemyMeleeScr : MonoBehaviour
                 if(RandomInt == 0)
                 {
                     IsCharging = true;
+                    animator.SetBool("Walk", false);
+                    animator.SetTrigger("Charge");
                     StartCoroutine(Charge());
-
                 }
             }
 
             Distance = PlayerPos.position.x - transform.position.x;
             if(Distance < 0)
             {
-                transform.localScale = new Vector3(1,1.5f,0); 
+                transform.localScale = new Vector3(-4,4f,0); 
                 Dir = 1;
             }
             else if(Distance > 0)
             {
-                transform.localScale = new Vector3(-1,1.5f,0);
+                transform.localScale = new Vector3(4,4f,0);
                 Dir = -1;   
             }
         }        
@@ -75,6 +83,7 @@ public class EnemyMeleeScr : MonoBehaviour
             EnemyRb.AddForce(DashSpeed, ForceMode2D.Impulse);
         yield return new WaitForSeconds(2);
         EnemyRb.velocity = new Vector2(0f, 0f);
+        animator.SetBool("Walk", true);
         yield return new WaitForSeconds(5);
         IsCharging = false;
     }
@@ -83,6 +92,15 @@ public class EnemyMeleeScr : MonoBehaviour
         if(other.transform.tag == "Player" && IsCharging)
         {
             other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(ChargeDmg, Dir);
-        }           
+        }    
+        if(other.transform.tag == "Player")
+        {
+            StartCoroutine(StopMove());
+        }       
+    }
+    IEnumerator StopMove()
+    {
+        yield return new WaitForSeconds(1.5f);
+        EnemyRb.velocity = new Vector2(0f, 0f);
     }
 }

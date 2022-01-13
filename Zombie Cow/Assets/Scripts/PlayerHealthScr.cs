@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class PlayerHealthScr : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class PlayerHealthScr : MonoBehaviour
     Rigidbody2D PlayerRb;
     public Vector3 ForceBack;
     public Animator animator;
-    public SpriteRenderer PlayerSprite;
+    public SpriteRenderer Player;
     
     void Start()
     {
@@ -57,8 +58,26 @@ public class PlayerHealthScr : MonoBehaviour
     }
     IEnumerator InvincibleStat()
     {
-        PlayerSprite.color = Color.
-        yield return new WaitForSeconds(2);
+        Player.color = new Color32(255,255,255,140);   
+        yield return new WaitForSeconds(0.2f);
+        Player.color = new Color32(255,255,255,255);   
+        yield return new WaitForSeconds(0.2f);
+        Player.color = new Color32(255,255,255,140);   
+        yield return new WaitForSeconds(0.2f);
+        Player.color = new Color32(255,255,255,255);   
+        yield return new WaitForSeconds(0.2f);
+        Player.color = new Color32(255,255,255,140);   
+        yield return new WaitForSeconds(0.2f);
+        Player.color = new Color32(255,255,255,255); 
+        yield return new WaitForSeconds(0.2f);
+        Player.color = new Color32(255,255,255,140);   
+        yield return new WaitForSeconds(0.2f);
+        Player.color = new Color32(255,255,255,255); 
+        yield return new WaitForSeconds(0.2f);
+        Player.color = new Color32(255,255,255,140);   
+        yield return new WaitForSeconds(0.2f);
+        Player.color = new Color32(255,255,255,255); 
+        yield return new WaitForSeconds(0.2f);        
         Invincible = false;
     }
     IEnumerator EnemyPushed()

@@ -55,4 +55,16 @@ public class EnemyRangeMovement : MonoBehaviour
             } 
         }
     }
+    void OnCollisionEnter2D(Collision2D other) 
+    {
+        if(other.transform.tag == "Player")
+        {
+            StartCoroutine(StopMove());
+        }       
+    }
+    IEnumerator StopMove()
+    {
+        yield return new WaitForSeconds(1.5f);
+        EnemyRb.velocity = new Vector2(0f, 0f);
+    }
 }
