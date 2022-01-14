@@ -17,7 +17,10 @@ public class MilkScr : MonoBehaviour
     {
         if(other.tag == "Enemy")
         {
-            other.GetComponent<EnemyHealthScr>().TakeDmg(MilkDmg,"Range");        
+            if(other.GetComponent<EnemyRangeHealthScr>() != null)        
+                other.GetComponent<EnemyRangeHealthScr>().TakeDmg(MilkDmg,"Range");
+            else
+                other.GetComponent<EnemyMeleeHealthScr>().TakeDmg(MilkDmg,"Range");
             Destroy(gameObject);
             return;
         }
@@ -30,5 +33,5 @@ public class MilkScr : MonoBehaviour
         if(other.tag != "Player" && other.tag != "Milk"  )
             Destroy(gameObject);
         
-    }
+    }        
 }

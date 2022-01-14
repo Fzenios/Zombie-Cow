@@ -101,6 +101,12 @@ TextureImporter:
   - first:
       213: 8441759752675282891
     second: EnemieMelee_32
+  - first:
+      213: 6568058257552851365
+    second: EnemieMelee_33
+  - first:
+      213: 6192974644560142980
+    second: EnemieMelee_34
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -218,7 +224,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 320
+        y: 384
         width: 64
         height: 64
       alignment: 0
@@ -239,7 +245,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 320
+        y: 384
         width: 64
         height: 64
       alignment: 0
@@ -260,7 +266,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 320
+        y: 384
         width: 64
         height: 64
       alignment: 0
@@ -281,7 +287,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 320
+        y: 384
         width: 64
         height: 64
       alignment: 0
@@ -298,32 +304,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: EnemieMelee_4
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 256
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 65f231d9038eb3b90800000000000000
-      internalID: -7260954678713438378
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: EnemieMelee_5
       rect:
         serializedVersion: 2
-        x: 64
-        y: 256
+        x: 0
+        y: 320
         width: 64
         height: 64
       alignment: 0
@@ -343,8 +328,8 @@ TextureImporter:
       name: EnemieMelee_6
       rect:
         serializedVersion: 2
-        x: 128
-        y: 256
+        x: 64
+        y: 320
         width: 64
         height: 64
       alignment: 0
@@ -364,8 +349,8 @@ TextureImporter:
       name: EnemieMelee_7
       rect:
         serializedVersion: 2
-        x: 192
-        y: 256
+        x: 128
+        y: 320
         width: 64
         height: 64
       alignment: 0
@@ -385,8 +370,8 @@ TextureImporter:
       name: EnemieMelee_8
       rect:
         serializedVersion: 2
-        x: 0
-        y: 192
+        x: 192
+        y: 320
         width: 64
         height: 64
       alignment: 0
@@ -406,8 +391,8 @@ TextureImporter:
       name: EnemieMelee_9
       rect:
         serializedVersion: 2
-        x: 64
-        y: 192
+        x: 256
+        y: 320
         width: 64
         height: 64
       alignment: 0
@@ -427,8 +412,8 @@ TextureImporter:
       name: EnemieMelee_10
       rect:
         serializedVersion: 2
-        x: 128
-        y: 192
+        x: 0
+        y: 256
         width: 64
         height: 64
       alignment: 0
@@ -448,8 +433,8 @@ TextureImporter:
       name: EnemieMelee_11
       rect:
         serializedVersion: 2
-        x: 192
-        y: 192
+        x: 64
+        y: 256
         width: 64
         height: 64
       alignment: 0
@@ -469,8 +454,8 @@ TextureImporter:
       name: EnemieMelee_12
       rect:
         serializedVersion: 2
-        x: 256
-        y: 192
+        x: 128
+        y: 256
         width: 64
         height: 64
       alignment: 0
@@ -490,8 +475,8 @@ TextureImporter:
       name: EnemieMelee_13
       rect:
         serializedVersion: 2
-        x: 320
-        y: 192
+        x: 192
+        y: 256
         width: 64
         height: 64
       alignment: 0
@@ -511,8 +496,8 @@ TextureImporter:
       name: EnemieMelee_14
       rect:
         serializedVersion: 2
-        x: 384
-        y: 192
+        x: 256
+        y: 256
         width: 64
         height: 64
       alignment: 0
@@ -532,8 +517,8 @@ TextureImporter:
       name: EnemieMelee_15
       rect:
         serializedVersion: 2
-        x: 448
-        y: 192
+        x: 320
+        y: 256
         width: 64
         height: 64
       alignment: 0
@@ -553,8 +538,8 @@ TextureImporter:
       name: EnemieMelee_16
       rect:
         serializedVersion: 2
-        x: 0
-        y: 128
+        x: 384
+        y: 256
         width: 64
         height: 64
       alignment: 0
@@ -574,8 +559,8 @@ TextureImporter:
       name: EnemieMelee_17
       rect:
         serializedVersion: 2
-        x: 64
-        y: 128
+        x: 448
+        y: 256
         width: 64
         height: 64
       alignment: 0
@@ -595,8 +580,8 @@ TextureImporter:
       name: EnemieMelee_19
       rect:
         serializedVersion: 2
-        x: 0
-        y: 64
+        x: 64
+        y: 192
         width: 64
         height: 64
       alignment: 0
@@ -616,8 +601,8 @@ TextureImporter:
       name: EnemieMelee_20
       rect:
         serializedVersion: 2
-        x: 64
-        y: 64
+        x: 128
+        y: 192
         width: 64
         height: 64
       alignment: 0
@@ -637,8 +622,8 @@ TextureImporter:
       name: EnemieMelee_21
       rect:
         serializedVersion: 2
-        x: 128
-        y: 64
+        x: 0
+        y: 128
         width: 64
         height: 64
       alignment: 0
@@ -658,8 +643,8 @@ TextureImporter:
       name: EnemieMelee_22
       rect:
         serializedVersion: 2
-        x: 192
-        y: 64
+        x: 64
+        y: 128
         width: 64
         height: 64
       alignment: 0
@@ -679,8 +664,8 @@ TextureImporter:
       name: EnemieMelee_23
       rect:
         serializedVersion: 2
-        x: 256
-        y: 64
+        x: 128
+        y: 128
         width: 64
         height: 64
       alignment: 0
@@ -700,8 +685,8 @@ TextureImporter:
       name: EnemieMelee_24
       rect:
         serializedVersion: 2
-        x: 320
-        y: 64
+        x: 192
+        y: 128
         width: 64
         height: 64
       alignment: 0
@@ -721,8 +706,8 @@ TextureImporter:
       name: EnemieMelee_25
       rect:
         serializedVersion: 2
-        x: 384
-        y: 64
+        x: 256
+        y: 128
         width: 64
         height: 64
       alignment: 0
@@ -742,8 +727,8 @@ TextureImporter:
       name: EnemieMelee_18
       rect:
         serializedVersion: 2
-        x: 128
-        y: 128
+        x: 0
+        y: 192
         width: 64
         height: 64
       alignment: 0
@@ -763,8 +748,8 @@ TextureImporter:
       name: EnemieMelee_27
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 384
+        y: 128
         width: 64
         height: 64
       alignment: 0
@@ -781,32 +766,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: EnemieMelee_28
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 0
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6e1db8465aa688250800000000000000
-      internalID: 5947120566531772902
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: EnemieMelee_29
       rect:
         serializedVersion: 2
-        x: 128
-        y: 0
+        x: 0
+        y: 64
         width: 64
         height: 64
       alignment: 0
@@ -826,8 +790,8 @@ TextureImporter:
       name: EnemieMelee_30
       rect:
         serializedVersion: 2
-        x: 192
-        y: 0
+        x: 64
+        y: 64
         width: 64
         height: 64
       alignment: 0
@@ -847,8 +811,8 @@ TextureImporter:
       name: EnemieMelee_31
       rect:
         serializedVersion: 2
-        x: 256
-        y: 0
+        x: 128
+        y: 64
         width: 64
         height: 64
       alignment: 0
@@ -868,8 +832,8 @@ TextureImporter:
       name: EnemieMelee_32
       rect:
         serializedVersion: 2
-        x: 320
-        y: 0
+        x: 192
+        y: 64
         width: 64
         height: 64
       alignment: 0
@@ -881,6 +845,69 @@ TextureImporter:
       bones: []
       spriteID: bcf4669c4c7272570800000000000000
       internalID: 8441759752675282891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EnemieMelee_26
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc4a2ab9209276280800000000000000
+      internalID: -9050219834999921460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EnemieMelee_33
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a14289af2e662b50800000000000000
+      internalID: 6568058257552851365
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EnemieMelee_34
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4822200a0add1f550800000000000000
+      internalID: 6192974644560142980
       vertices: []
       indices: 
       edges: []

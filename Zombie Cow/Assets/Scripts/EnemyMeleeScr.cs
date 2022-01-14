@@ -11,15 +11,16 @@ public class EnemyMeleeScr : MonoBehaviour
     public Vector2 DashSpeed;
     bool FightStart;
     public float drawline;
-    bool IsCharging;
+    bool IsCharging, CanCharge;
     Rigidbody2D EnemyRb;
-    public float ChargeDmg;
+    public float ChargeDmg, PunchDmg;
     int Dir;
     Animator animator;
     void Start()
     {
         IsCharging = false;
         FightStart = false;
+        CanCharge = true;
         PlayerPos = GameObject.FindGameObjectWithTag("Player").transform;
         EnemyRb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -43,18 +44,29 @@ public class EnemyMeleeScr : MonoBehaviour
         
         if(FightStart)
         {
-            animator.SetBool("Walk", true);
+            
             if(Vector2.Distance(transform.position,PlayerPos.position) > EnemySafeDistance )
                 transform.position = Vector2.MoveTowards(transform.position, PlayerPos.position, Time.deltaTime * EnemySpeed);
             else if (Vector2.Distance(transform.position,PlayerPos.position) < EnemyUnSafeDistance )
                 transform.position = Vector2.MoveTowards(transform.position, PlayerPos.position, -Time.deltaTime * EnemySpeed);
+            
+            if(Vector2.Distance(transform.position,PlayerPos.position) >= 0.8 && !IsCharging)
+                animator.SetBool("Walk", true);
+            else
+                animator.SetBool("Walk", false);
 
-            if(!IsCharging)
+            if(Vector2.Distance(transform.position,PlayerPos.position) < 0.8f && !IsCharging)
+                animator.SetBool("Punch", true);
+            else
+                animator.SetBool("Punch", false);
+
+            if(CanCharge)
             {
                 int RandomInt = Random.Range(0,500);
                 if(RandomInt == 0)
                 {
                     IsCharging = true;
+                    CanCharge = false;
                     animator.SetBool("Walk", false);
                     animator.SetTrigger("Charge");
                     StartCoroutine(Charge());
@@ -83,9 +95,10 @@ public class EnemyMeleeScr : MonoBehaviour
             EnemyRb.AddForce(DashSpeed, ForceMode2D.Impulse);
         yield return new WaitForSeconds(2);
         EnemyRb.velocity = new Vector2(0f, 0f);
-        animator.SetBool("Walk", true);
-        yield return new WaitForSeconds(5);
         IsCharging = false;
+        yield return new WaitForSeconds(5);
+        CanCharge = true;
+        
     }
     void OnCollisionEnter2D(Collision2D other) 
     {
@@ -95,6 +108,33 @@ public class EnemyMeleeScr : MonoBehaviour
         }    
         if(other.transform.tag == "Player")
         {
+            StartCoroutine(StopMove());
+        }       
+    }
+    void OnCollisionStay2D(Collision2D other) 
+    {
+        if(other.transform.tag == "Player" && IsCharging)
+        {
+            other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(ChargeDmg, Dir);
+        }    
+        if(other.transform.tag == "Player")
+        {
+            StartCoroutine(StopMove());
+        }  
+    }
+    void OnTriggerEnter2D(Collider2D other)        
+    {   
+        if(other.tag == "Player")
+        {
+            other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(PunchDmg, Dir);
+            StartCoroutine(StopMove());
+        }       
+    }
+    void OnTriggerStay2D(Collider2D other) 
+    {
+        if(other.tag == "Player")
+        {
+            other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(PunchDmg, Dir);
             StartCoroutine(StopMove());
         }       
     }

@@ -14,16 +14,17 @@ public class EnemyRangeMovement : MonoBehaviour
     float DistanceWithPlayer;
     public float drawline;
     public int Dir;
+    Animator animator;
     void Start()
     {
         EnemyRb = GetComponent<Rigidbody2D>();
         PlayerPos = GameObject.FindGameObjectWithTag("Player").transform;
         FightStart = false;
+        animator = GetComponent<Animator>();
     }
 
     void Update()
     {
-        
         Debug.DrawLine(transform.position, new Vector3(transform.position.x + drawline, transform.position.y, transform.position.z), Color.cyan);
         DistanceWithPlayer = Vector2.Distance(transform.position,PlayerPos.position);
         
@@ -38,19 +39,27 @@ public class EnemyRangeMovement : MonoBehaviour
         if(FightStart)
         {
             if(Vector2.Distance(transform.position,PlayerPos.position) > EnemySafeDistance )
+            {
+                animator.SetBool("Walk", true);
                 transform.position = Vector2.MoveTowards(transform.position, PlayerPos.position, Time.deltaTime * EnemySpeed);
+            }
             else if (Vector2.Distance(transform.position,PlayerPos.position) < EnemyUnSafeDistance )
+            {
+                animator.SetBool("Walk", true);
                 transform.position = Vector2.MoveTowards(transform.position, PlayerPos.position, -Time.deltaTime * EnemySpeed);
+            }
+            else 
+                animator.SetBool("Walk", false);
             
             Distance = PlayerPos.position.x - transform.position.x;
             if(Distance < 0)
             {
-                transform.localScale = new Vector3(1,1.5f,0);
+                transform.localScale = new Vector3(-4,4,0);
                 Dir = 1;
             } 
             else if(Distance > 0)
             {
-                transform.localScale = new Vector3(-1,1.5f,0);
+                transform.localScale = new Vector3(4,4,0);
                 Dir = -1;
             } 
         }

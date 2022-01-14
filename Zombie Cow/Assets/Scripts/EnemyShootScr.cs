@@ -13,6 +13,7 @@ public class EnemyShootScr : MonoBehaviour
     public float Distance;
     public float EnemyDamage;
     public EnemyRangeMovement enemyRangeMovement;
+    public Animator animator;
 
     void Start()
     {
@@ -30,7 +31,10 @@ public class EnemyShootScr : MonoBehaviour
         if(EnemyShootTimerCur >= EnemyShootTimer)
             {
                 if(Distance <= enemyRangeMovement.DistanceToActivate)
+                {
+                    animator.SetTrigger("Throw");
                     Shoot();
+                }
             }
         else
             EnemyShootTimerCur += Time.deltaTime;

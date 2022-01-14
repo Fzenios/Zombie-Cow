@@ -13,6 +13,7 @@ public class EnemyHealthScr : MonoBehaviour
     int Dir;
     Animator animator;
     BoxCollider2D Collider;
+    CircleCollider2D Collider2;
     Rigidbody2D EnemyRb;
     public EnemyMeleeScr enemyMeleeScr;
     
@@ -22,6 +23,7 @@ public class EnemyHealthScr : MonoBehaviour
         HealthSlider.maxValue = MaxHp;
         PlayerPos = GameObject.FindGameObjectWithTag("Player").transform;
         Collider = GetComponent<BoxCollider2D>();
+        Collider2 = GetComponent<CircleCollider2D>();
         EnemyRb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
@@ -48,9 +50,13 @@ public class EnemyHealthScr : MonoBehaviour
             CurrentHp -= Damage;
             if(CurrentHp <= 0)
             {
+                animator.SetBool("Walk", false);
+                animator.SetBool("Punch", false);
+                EnemyRb.velocity = new Vector2(0f, 0f);
                 animator.SetTrigger("Death");
                 Destroy(gameObject, 5);
                 Collider.enabled = false;
+                Collider2.enabled = false;
                 EnemyRb.gravityScale = 0;
                 enemyMeleeScr.enabled = false;
                 return;
@@ -61,11 +67,15 @@ public class EnemyHealthScr : MonoBehaviour
             CurrentHp -= Damage;
             if(CurrentHp <= 0)
             {
+                animator.SetBool("Walk", false);
+                animator.SetBool("Punch", false);
                 EnemyRb.velocity = new Vector2(0f, 0f);
-                animator.SetTrigger("DeathMetal");
                 Collider.enabled = false;
+                Collider2.enabled = false;
                 EnemyRb.gravityScale = 0;
+                animator.SetTrigger("DeathMetal");
                 enemyMeleeScr.enabled = false;
+                return;
             }
         }    
     }

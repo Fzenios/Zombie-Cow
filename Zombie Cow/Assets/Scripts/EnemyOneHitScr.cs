@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class EnemyOneHitScr : MonoBehaviour
 {
-    public float CurrentHp; 
+    EnemyMeleeHealthScr enemyMeleeHealthScr;
     void Start()
     {
-        CurrentHp = 5;        
+        enemyMeleeHealthScr = GetComponent<EnemyMeleeHealthScr>();
     }
 
     // Update is called once per frame
@@ -19,7 +19,7 @@ public class EnemyOneHitScr : MonoBehaviour
     {
         if(other.transform.tag == "Player")
         {
-            Destroy(gameObject);
+            enemyMeleeHealthScr.TakeDmg(100000, "Melee");            
         }        
     }
 }

@@ -125,8 +125,10 @@ public class PlayerMovementScr : MonoBehaviour
         {
             StopCoroutine(Dashmove);
             animator.SetBool("Charge", false);
-
-            other.transform.GetComponent<EnemyHealthScr>().TakeDmg(DashDmg, "Melee");  
+            if(other.transform.GetComponent<EnemyRangeHealthScr>() != null)
+                other.transform.GetComponent<EnemyRangeHealthScr>().TakeDmg(DashDmg, "Melee");
+            else
+                other.transform.GetComponent<EnemyMeleeHealthScr>().TakeDmg(DashDmg,"Melee");  
 
             isDashing = false;
             PlayerRb.gravityScale = 3;
@@ -142,6 +144,7 @@ public class PlayerMovementScr : MonoBehaviour
             PlayerRb.gravityScale = 3;
         }  
     }
+    
     void OnTriggerEnter2D(Collider2D other) 
     {
         if(other.tag == "BossTrig")

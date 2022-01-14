@@ -97,8 +97,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f106e3f6daa85348b43d71a94983a3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MilkSpeed: 5
-  BulletPos: {fileID: 0}
   MilkDmg: 10
 --- !u!70 &8483548476796857877
 CapsuleCollider2D:
