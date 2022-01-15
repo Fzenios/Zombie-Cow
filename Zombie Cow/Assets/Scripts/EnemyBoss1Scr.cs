@@ -32,6 +32,7 @@ public class EnemyBoss1Scr : MonoBehaviour
     bool IsJumping;
     bool CanMove;
     public Slider HealthSlider;
+    Animator animator;
     
     
     void Start()
@@ -41,6 +42,7 @@ public class EnemyBoss1Scr : MonoBehaviour
         FightStart = false;
         PlayerPos = GameObject.FindGameObjectWithTag("Player").transform;
         EnemyRb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         RangeAttack = false;
         JumpAttack = false;   
         IsJumping = false;
@@ -76,17 +78,21 @@ public class EnemyBoss1Scr : MonoBehaviour
                     transform.position = Vector2.MoveTowards(transform.position, PlayerPos.position, Time.deltaTime * EnemySpeed);
                 else if (Vector2.Distance(transform.position,PlayerPos.position) < EnemyUnSafeDistance )
                     transform.position = Vector2.MoveTowards(transform.position, PlayerPos.position, -Time.deltaTime * EnemySpeed);
+                
+                animator.SetBool("Walk", true);
             }
+            else
+                animator.SetBool("Walk", false);
 
             Distance = PlayerPos.position.x - transform.position.x;
             if(Distance < 0)
             {
-                transform.localScale = new Vector3(2.5f,4,0);
+                transform.localScale = new Vector3(-6f,6,0);
                 Dir = 1;
             } 
             else if(Distance > 0)
             {
-                transform.localScale = new Vector3(-2.5f,4,0);
+                transform.localScale = new Vector3(6f,6,0);
                 Dir = -1;  
             } 
         } 
@@ -126,7 +132,7 @@ public class EnemyBoss1Scr : MonoBehaviour
         }
     }
     IEnumerator Rangeattack()
-    {
+    {   
         yield return new WaitForSeconds(3);
         CanMove = false;
         RangeAttack = true;
