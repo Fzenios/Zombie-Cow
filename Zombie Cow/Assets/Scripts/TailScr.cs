@@ -36,6 +36,7 @@ public class TailScr : MonoBehaviour
             SegmentPoses[i] = TargetDir.position;
         }
         LineRend.SetPositions(SegmentPoses);
+        
         Destroy(gameObject, 5);
     }
 
@@ -47,7 +48,10 @@ public class TailScr : MonoBehaviour
 
         for (int i = 1; i < SegmentPoses.Length; i++)
         {
-            SegmentPoses[i] = Vector3.SmoothDamp(SegmentPoses[i], SegmentPoses[i - 1] + TargetDir.right * TargetDist, ref SegmentV[i], SmoothSpeed + i / TrailSpeed);
+            if(enemyBoss1Scr.Dir == 1)
+                SegmentPoses[i] = Vector3.SmoothDamp(SegmentPoses[i], SegmentPoses[i - 1] + TargetDir.right * TargetDist, ref SegmentV[i], SmoothSpeed + i / TrailSpeed);
+            else 
+                SegmentPoses[i] = Vector3.SmoothDamp(SegmentPoses[i], SegmentPoses[i - 1] + TargetDir.right * -TargetDist, ref SegmentV[i], SmoothSpeed + i / TrailSpeed); 
         }
         LineRend.SetPositions(SegmentPoses);
     }

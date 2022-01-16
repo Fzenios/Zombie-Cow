@@ -33,6 +33,7 @@ public class EnemyBoss1Scr : MonoBehaviour
     bool CanMove;
     public Slider HealthSlider;
     Animator animator;
+    BoxCollider2D Collider;
     
     
     void Start()
@@ -43,6 +44,7 @@ public class EnemyBoss1Scr : MonoBehaviour
         PlayerPos = GameObject.FindGameObjectWithTag("Player").transform;
         EnemyRb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        Collider = GetComponent<BoxCollider2D>();
         RangeAttack = false;
         JumpAttack = false;   
         IsJumping = false;
@@ -72,19 +74,20 @@ public class EnemyBoss1Scr : MonoBehaviour
     
         if(FightStart)
         {
+            Distance = PlayerPos.position.x - transform.position.x;
             if(CanMove)    
             { 
                 if(Vector2.Distance(transform.position,PlayerPos.position) > EnemySafeDistance )
                     transform.position = Vector2.MoveTowards(transform.position, PlayerPos.position, Time.deltaTime * EnemySpeed);
                 else if (Vector2.Distance(transform.position,PlayerPos.position) < EnemyUnSafeDistance )
                     transform.position = Vector2.MoveTowards(transform.position, PlayerPos.position, -Time.deltaTime * EnemySpeed);
-                
+
                 animator.SetBool("Walk", true);
             }
             else
                 animator.SetBool("Walk", false);
 
-            Distance = PlayerPos.position.x - transform.position.x;
+            
             if(Distance < 0)
             {
                 transform.localScale = new Vector3(-6f,6,0);
@@ -98,6 +101,7 @@ public class EnemyBoss1Scr : MonoBehaviour
         } 
         if(RangeAttack)
         {   
+            animator.SetTrigger("Range");
             RangeAttack = false;
             GameObject Project1 = Instantiate(Projectile, ProjectPos1.position, ProjectPos1.rotation);
             GameObject Project2 = Instantiate(Projectile, ProjectPos2.position, ProjectPos2.rotation);
@@ -113,6 +117,9 @@ public class EnemyBoss1Scr : MonoBehaviour
             }
             else
             {
+                Project1.transform.localScale = new Vector2(-Project1.transform.localScale.x,Project1.transform.localScale.y);
+                Project2.transform.localScale = new Vector2(-Project2.transform.localScale.x,Project2.transform.localScale.y);
+                Project3.transform.localScale = new Vector2(-Project3.transform.localScale.x,Project3.transform.localScale.y);
                 Project1Rb.AddForce(-ProjectForce, ForceMode2D.Impulse);
                 Project2Rb.AddForce(-ProjectForce, ForceMode2D.Impulse);
                 Project3Rb.AddForce(-ProjectForce, ForceMode2D.Impulse);
@@ -120,6 +127,7 @@ public class EnemyBoss1Scr : MonoBehaviour
         }
         if(ChargeAttack)
         {
+            animator.SetTrigger("Charge");
             ChargeAttack = false;
             if(Dir == 1)
                 EnemyRb.AddForce(ChargeForce, ForceMode2D.Impulse);
@@ -140,8 +148,9 @@ public class EnemyBoss1Scr : MonoBehaviour
         RangeAttack = true;
         yield return new WaitForSeconds(3);
         RangeAttack = true;
+        yield return new WaitForSeconds(1);
         CanMove = true;
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(3);
         Attacking = false;
     }
     IEnumerator Chargeattack()
@@ -163,23 +172,27 @@ public class EnemyBoss1Scr : MonoBehaviour
     IEnumerator Jumpattack()
     {
         yield return new WaitForSeconds(3);
+        animator.SetTrigger("Jump");
         CanMove = false;
         JumpAttack = true;
         IsJumping = false;
         EnemyRb.gravityScale = 0;
         int RandomInt = Random.Range(2, 7);
         yield return new WaitForSeconds(RandomInt);
+        animator.SetTrigger("Drop");
         JumpAttack = false;
         EnemyRb.gravityScale = 1;
         EnemyRb.AddForce(JumpAttackSpeed, ForceMode2D.Impulse);
         IsJumping = true;
         yield return new WaitForSeconds(1);
+        animator.SetTrigger("Jump");
         EnemyRb.velocity = new Vector2(0f, 0f);
         JumpAttack = true;
         IsJumping = false;
         EnemyRb.gravityScale = 0;
         RandomInt = Random.Range(2, 4);
         yield return new WaitForSeconds(RandomInt);
+        animator.SetTrigger("Drop");
         JumpAttack = false;
         EnemyRb.gravityScale = 1;
         EnemyRb.AddForce(JumpAttackSpeed, ForceMode2D.Impulse);
@@ -195,12 +208,28 @@ public class EnemyBoss1Scr : MonoBehaviour
     public void TakeDmg(float Damage, string TypeDmg)
     {
         if(TypeDmg == "Range")
+        {
             CurrentHp -= Damage;
+            if(CurrentHp <= 0)
+            {
+                animator.SetTrigger("DeadRange");
+                Destroy(gameObject, 5);
+                Dying();
+                return;
+            }
+        }
         if(TypeDmg == "Melee")
+        {
             CurrentHp -= Damage;
+            if(CurrentHp <= 0)
+            {
+                animator.SetTrigger("DeadMelee");
+                Dying();
+                return;
+            }
+        }
     
-        if(CurrentHp <= 0)
-            Destroy(gameObject);
+        
     }
     
     void OnCollisionEnter2D(Collision2D other) 
@@ -222,8 +251,17 @@ public class EnemyBoss1Scr : MonoBehaviour
                     PlayerRb.AddForce(-BackForce, ForceMode2D.Impulse);
                 other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(EnemyheavyDmg, Dir);
             }
+
             other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(EnemyTouchDmg, Dir);
+            StartCoroutine(StopSlide());
         }           
+    }
+    void OnCollisionStay2D(Collision2D other) 
+    {
+        if(other.transform.tag == "Player")
+        {
+            other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(EnemyTouchDmg, Dir);
+        }
     }
     IEnumerator SendBack()
     {
@@ -231,4 +269,32 @@ public class EnemyBoss1Scr : MonoBehaviour
         playerMovementScr.EnemyPushed = false;
         playerMovementScr.PlayerRb.velocity = new Vector2(0f, 0f);
     }
+    void Dying()
+    {
+        FightStart = false;
+        animator.SetBool("Walk", false);
+        EnemyRb.velocity = new Vector2(0f, 0f);
+        
+        StopAllCoroutines();
+        if(RandomAttack != 3)
+        {
+            EnemyRb.gravityScale = 0;
+            Collider.enabled = false;
+        }
+        else 
+            StartCoroutine(WaitForDrop());
+    }
+    IEnumerator WaitForDrop()
+    {
+        JumpAttack = false;
+        EnemyRb.gravityScale = 3;
+        yield return new WaitForSeconds(2);
+        EnemyRb.gravityScale = 0;
+        Collider.enabled = false;
+    }
+    IEnumerator StopSlide()
+    {
+        yield return new WaitForSeconds(1);
+        EnemyRb.velocity = new Vector2(0,0);
+    }    
 }

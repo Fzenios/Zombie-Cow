@@ -15,10 +15,10 @@ public class PlayerMovementScr : MonoBehaviour
     public Vector2 DashSpeed;
     public bool isDashing;
     Coroutine Dashmove;
-    //float Movement;
+    float Movement;
     public bool EnemyPushed;
     public EnemyBoss1Scr enemyBoss1Scr;
-    //int Dir;
+    int Dir;
     public Animator animator;
     public GameObject GunObj;
     int JumpCounter;
@@ -29,31 +29,65 @@ public class PlayerMovementScr : MonoBehaviour
         PlayerBox = GetComponent<BoxCollider2D>();      
         isDashing = false;  
         JumpCounter = 0;
+        Dir = 1;
     }
     
     void Update() 
     {
-        if(!isDashing && !EnemyPushed)
-        {
-            if(Input.GetKey(DashKey) && Input.GetKey(KeyCode.D))
-                Dashmove = StartCoroutine(DashMove(1));
-            else if(Input.GetKey(DashKey) && Input.GetKey(KeyCode.A))
-                Dashmove = StartCoroutine(DashMove(-1));
-        }
+        Movement = Input.GetAxis("Horizontal");
+        animator.SetFloat("Movement",  Mathf.Abs(Input.GetAxisRaw("Horizontal")));
 
+        if(Input.GetKeyDown(KeyCode.Space) && !isDashing)
+        {
+            Debug.Log(JumpCounter);
+            JumpResetCur = 0;
+
+            if(JumpCounter == 0)
+                animator.SetTrigger("JumpTr"); 
+
+            JumpCounter++;
+            
+        }
+        if(Input.GetKey(KeyCode.Space) && !isDashing)
+        { 
+            if(JumpCounter < 2)
+            {
+                
+                if(JumpResetCur <= JumpReset)
+                {
+                    PlayerRb.velocity = new Vector2(PlayerRb.velocity.x, JumpSpeed);
+                    JumpResetCur += Time.deltaTime;
+                }  
+            }
+        }
         if(isGrounded() || isGroundedEnemy())
         {
             JumpResetCur = 0;
-        }  
+            JumpCounter = 0;
+        }          
+        if(isGrounded() || isGroundedEnemy() || isDashing)
+            animator.SetBool("Jump", false);
+        else
+            animator.SetBool("Jump", true);
+
+        if(!isDashing && !EnemyPushed)
+        {
+            if(Input.GetKey(DashKey) && Dir == 1)
+                Dashmove = StartCoroutine(DashMove(Dir));
+            else if(Input.GetKey(DashKey) && Dir == -1)
+                Dashmove = StartCoroutine(DashMove(Dir));
+        }
+
+        
         if(Input.GetKey(KeyCode.D) && !isDashing)
         {
             transform.localScale = new Vector3(1,1,1);
-           // Dir = 1;
+            Dir = 1;
         } 
         if(Input.GetKey(KeyCode.A) && !isDashing)
         {
             transform.localScale = new Vector3(-1,1,0);
-           // Dir = -1;  
+            Dir = -1;  
         }     
         if(isDashing)
             GunObj.SetActive(false);
@@ -63,35 +97,12 @@ public class PlayerMovementScr : MonoBehaviour
 
     void FixedUpdate() 
     {
-           //Movement = Input.GetAxis("Horizontal") * MoveSpeed;
-              //  PlayerRb.velocity = new Vector2(Movement, PlayerRb.velocity.y);
-                if(!isDashing && !EnemyPushed)
-                {
-                    PlayerRb.velocity = new Vector2(Input.GetAxis("Horizontal") * MoveSpeed, PlayerRb.velocity.y); 
-                    animator.SetFloat("Movement",  Mathf.Abs(Input.GetAxisRaw("Horizontal")));
-                }
-            
-                //PlayerRb.velocity = new Vector2(0f, 0f);
-        
-        if(Input.GetKey(KeyCode.Space) && !isDashing)
+        if(!isDashing && !EnemyPushed)
         {
-            if(JumpResetCur <= JumpReset)
-            {
-                PlayerRb.velocity = new Vector2(PlayerRb.velocity.x, JumpSpeed);
-                JumpResetCur += Time.deltaTime;
-                JumpCounter++;
-                if(JumpCounter == 1)
-                    animator.SetBool("Jump", true);
-                else
-                    animator.SetTrigger("JumpTr");
-            }
-        }
-        if(isGrounded() || isGrounded() || isDashing)
-        {
-            animator.SetBool("Jump", false);
-            JumpCounter = 0;
+            PlayerRb.velocity = new Vector2(Movement * MoveSpeed, PlayerRb.velocity.y); 
         }
     }
+
     bool isGrounded()
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(PlayerBox.bounds.center, PlayerBox.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
@@ -123,13 +134,16 @@ public class PlayerMovementScr : MonoBehaviour
     {
         if(other.transform.tag == "Enemy" && isDashing)
         {
-            StopCoroutine(Dashmove);
-            animator.SetBool("Charge", false);
             if(other.transform.GetComponent<EnemyRangeHealthScr>() != null)
                 other.transform.GetComponent<EnemyRangeHealthScr>().TakeDmg(DashDmg, "Melee");
             else
                 other.transform.GetComponent<EnemyMeleeHealthScr>().TakeDmg(DashDmg,"Melee");  
 
+            Rigidbody2D EnemyRb = other.transform.GetComponent<Rigidbody2D>(); 
+            StartCoroutine(StopPush(EnemyRb));
+
+            StopCoroutine(Dashmove);
+            animator.SetBool("Charge", false);
             isDashing = false;
             PlayerRb.gravityScale = 3;
         }  
@@ -138,8 +152,10 @@ public class PlayerMovementScr : MonoBehaviour
             StopCoroutine(Dashmove);
             animator.SetBool("Charge", false);
 
-            other.transform.GetComponent<EnemyBoss1Scr>().TakeDmg(DashDmg, "Melee");  
-
+            other.transform.GetComponent<EnemyBoss1Scr>().TakeDmg(DashDmg, "Melee"); 
+            Rigidbody2D EnemyRb = other.transform.GetComponent<Rigidbody2D>(); 
+            StartCoroutine(StopPush(EnemyRb));
+            
             isDashing = false;
             PlayerRb.gravityScale = 3;
         }  
@@ -151,6 +167,11 @@ public class PlayerMovementScr : MonoBehaviour
         {
             enemyBoss1Scr.FightStart = true;
         }
+    }
+    IEnumerator StopPush(Rigidbody2D EnemyRb)
+    {
+        yield return new WaitForSeconds(1);
+        EnemyRb.velocity = new Vector2(0f, 0f);
     }
     
 }

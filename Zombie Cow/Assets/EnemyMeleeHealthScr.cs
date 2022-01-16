@@ -100,4 +100,11 @@ public class EnemyMeleeHealthScr : MonoBehaviour
             other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(EnemyTouchDmg, Dir);
         }           
     }
+    void OnCollisionStay2D(Collision2D other) 
+    {
+        if(other.transform.tag == "Player")
+        {
+            other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(EnemyTouchDmg, Dir);
+        }
+    }
 }

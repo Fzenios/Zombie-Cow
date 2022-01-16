@@ -71,6 +71,13 @@ public class EnemyRangeMovement : MonoBehaviour
             StartCoroutine(StopMove());
         }       
     }
+    void OnTriggerEnter2D(Collider2D other)        
+    {   
+        if(other.tag == "BossTrig")
+        {
+            Destroy(gameObject);
+        }   
+    }
     IEnumerator StopMove()
     {
         yield return new WaitForSeconds(1.5f);

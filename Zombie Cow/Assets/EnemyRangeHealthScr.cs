@@ -96,6 +96,13 @@ public class EnemyRangeHealthScr : MonoBehaviour
             else if(Distance > 0)
                 Dir = -1;
             other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(EnemyTouchDmg, Dir);
-        }           
+        }             
+    }
+    void OnCollisionStay2D(Collision2D other) 
+    {
+        if(other.transform.tag == "Player")
+        {
+            other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(EnemyTouchDmg, Dir);
+        }
     }
 }

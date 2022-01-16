@@ -34,12 +34,12 @@ public class EnemyMeleeScr : MonoBehaviour
         if(DistanceWithPlayer < DistanceToActivate)
         {
             FightStart = true;
-            animator.SetBool("Walk", false);
         }
         else
         {
             FightStart = false;
             EnemyRb.velocity = new Vector2(0f, 0f);
+            animator.SetBool("Walk", false);
         }
         
         if(FightStart)
@@ -93,7 +93,7 @@ public class EnemyMeleeScr : MonoBehaviour
             EnemyRb.AddForce(-DashSpeed, ForceMode2D.Impulse);
         else if(Distance > 0)
             EnemyRb.AddForce(DashSpeed, ForceMode2D.Impulse);
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1.5f);
         EnemyRb.velocity = new Vector2(0f, 0f);
         IsCharging = false;
         yield return new WaitForSeconds(5);
@@ -127,15 +127,19 @@ public class EnemyMeleeScr : MonoBehaviour
         if(other.tag == "Player")
         {
             other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(PunchDmg, Dir);
-            StartCoroutine(StopMove());
-        }       
+           // StartCoroutine(StopMove());
+        }   
+        if(other.tag == "BossTrig")
+        {
+            Destroy(gameObject);
+        }   
     }
     void OnTriggerStay2D(Collider2D other) 
     {
         if(other.tag == "Player")
         {
             other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(PunchDmg, Dir);
-            StartCoroutine(StopMove());
+            //StartCoroutine(StopMove());
         }       
     }
     IEnumerator StopMove()
