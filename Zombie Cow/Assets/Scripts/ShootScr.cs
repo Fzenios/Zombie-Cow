@@ -15,6 +15,7 @@ public class ShootScr : MonoBehaviour
     int Dir;
     public Animator animator;
     public PlayerMovementScr playerMovementScr;
+    public Camera MainCamera;
     
     void Start() 
     {
@@ -22,8 +23,9 @@ public class ShootScr : MonoBehaviour
     }
 
     void Update()
-    {
-        Vector3 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+    {   //ScreenToWorldPoint
+        //Vector3 difference = Camera.main.WorldToScreenPoint(Input.mousePosition) - transform.position; 
+        Vector3 difference = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -MainCamera.transform.position.z)) - transform.position; 
         float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
         
         if(Input.GetKey(KeyCode.D))

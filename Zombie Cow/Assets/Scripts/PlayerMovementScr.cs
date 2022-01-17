@@ -39,7 +39,6 @@ public class PlayerMovementScr : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Space) && !isDashing)
         {
-            Debug.Log(JumpCounter);
             JumpResetCur = 0;
 
             if(JumpCounter == 0)

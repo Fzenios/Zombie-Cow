@@ -13,7 +13,7 @@ public class PlayerHealthScr : MonoBehaviour
     PlayerMovementScr playerMovementScr;
     Rigidbody2D PlayerRb;
     public Vector3 ForceBack;
-    public Animator animator;
+    public Animator CameraAnimator, PlayerAnimator;
     public SpriteRenderer Player;
     
     void Start()
@@ -27,11 +27,6 @@ public class PlayerHealthScr : MonoBehaviour
     void Update()
     {
         HealthTxt.text = HpCurrent.ToString();
-
-        /*if(Input.GetKey(KeyCode.D))
-            Lookat = 1;
-        if(Input.GetKey(KeyCode.A))
-            Lookat = -1;   */
     }
     public void TakeDmg(float Damage, int Dir)
     {
@@ -44,7 +39,7 @@ public class PlayerHealthScr : MonoBehaviour
             if(HpCurrent <= 0)
                 Destroy(gameObject);
 
-            animator.SetTrigger("CamTrig");
+            CameraAnimator.SetTrigger("CamTrig");
 
             if(Dir == 1)
                 PlayerRb.AddForce(ForceBack, ForceMode2D.Impulse);
@@ -52,6 +47,7 @@ public class PlayerHealthScr : MonoBehaviour
                 PlayerRb.AddForce(-ForceBack, ForceMode2D.Impulse);
             
             StartCoroutine(EnemyPushed());
+            PlayerAnimator.SetTrigger("Damage");
 
             StartCoroutine(InvincibleStat());
         }
@@ -82,6 +78,7 @@ public class PlayerHealthScr : MonoBehaviour
     }
     IEnumerator EnemyPushed()
     {
+        
         playerMovementScr.EnemyPushed = true;
         yield return new WaitForSeconds(0.5f);
         playerMovementScr.EnemyPushed = false;
