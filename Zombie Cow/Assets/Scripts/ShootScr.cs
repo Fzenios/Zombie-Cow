@@ -25,38 +25,41 @@ public class ShootScr : MonoBehaviour
     void Update()
     {   //ScreenToWorldPoint
         //Vector3 difference = Camera.main.WorldToScreenPoint(Input.mousePosition) - transform.position; 
-        Vector3 difference = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -MainCamera.transform.position.z)) - transform.position; 
-        float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
-        
-        if(Input.GetKey(KeyCode.D))
-            Dir = 1;
-        if(Input.GetKey(KeyCode.A))
-            Dir = -1;
+        if(playerMovementScr.CanMove)
+        {
+            Vector3 difference = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -MainCamera.transform.position.z)) - transform.position; 
+            float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+            
+            if(Input.GetKey(KeyCode.D))
+                Dir = 1;
+            if(Input.GetKey(KeyCode.A))
+                Dir = -1;
 
-        if(Dir == 1)
-        {
-            offset = 0;
-            transform.rotation = Quaternion.Euler(0f, 0f, rotZ + offset); 
-        }
-        if(Dir == -1)
-        {
-            offset = 180;
-            transform.rotation = Quaternion.Euler(0f, 0f, rotZ - offset); 
-        }  
-        if(!playerMovementScr.isDashing)
-        {
-            if(CanShoot)
+            if(Dir == 1)
             {
-                if(ShootTimerCur >= ShootTimer)
+                offset = 0;
+                transform.rotation = Quaternion.Euler(0f, 0f, rotZ + offset); 
+            }
+            if(Dir == -1)
+            {
+                offset = 180;
+                transform.rotation = Quaternion.Euler(0f, 0f, rotZ - offset); 
+            }  
+            if(!playerMovementScr.isDashing)
+            {
+                if(CanShoot)
                 {
-                    if(Input.GetKey(ShootKey))
+                    if(ShootTimerCur >= ShootTimer)
                     {
-                        Shoot();
-                        animator.SetTrigger("Shoot");
+                        if(Input.GetKey(ShootKey))
+                        {
+                            Shoot();
+                            animator.SetTrigger("Shoot");
+                        }
                     }
+                    else
+                        ShootTimerCur += Time.deltaTime;
                 }
-                else
-                    ShootTimerCur += Time.deltaTime;
             }
         }
     }

@@ -22,6 +22,7 @@ public class PlayerMovementScr : MonoBehaviour
     public Animator animator;
     public GameObject GunObj;
     int JumpCounter;
+    public bool CanMove;
     
     void Start()
     {
@@ -34,60 +35,67 @@ public class PlayerMovementScr : MonoBehaviour
     
     void Update() 
     {
-        Movement = Input.GetAxis("Horizontal");
-        animator.SetFloat("Movement",  Mathf.Abs(Input.GetAxisRaw("Horizontal")));
-
-        if(Input.GetKeyDown(KeyCode.Space) && !isDashing)
+        if(CanMove)
         {
-            JumpResetCur = 0;
+            Movement = Input.GetAxis("Horizontal");
+            animator.SetFloat("Movement",  Mathf.Abs(Input.GetAxisRaw("Horizontal")));
 
-            if(JumpCounter == 0)
-                animator.SetTrigger("JumpTr"); 
-
-            JumpCounter++;
-            
-        }
-        if(Input.GetKey(KeyCode.Space) && !isDashing)
-        { 
-            if(JumpCounter < 2)
+            if(Input.GetKeyDown(KeyCode.Space) && !isDashing)
             {
+                JumpResetCur = 0;
+
+                if(JumpCounter == 0)
+                    animator.SetTrigger("JumpTr"); 
+
+                JumpCounter++;
                 
-                if(JumpResetCur <= JumpReset)
-                {
-                    PlayerRb.velocity = new Vector2(PlayerRb.velocity.x, JumpSpeed);
-                    JumpResetCur += Time.deltaTime;
-                }  
             }
+            
+            if(Input.GetKey(KeyCode.Space) && !isDashing)
+            { 
+                if(JumpCounter < 2)
+                {
+                    
+                    if(JumpResetCur <= JumpReset)
+                    {
+                        PlayerRb.velocity = new Vector2(PlayerRb.velocity.x, JumpSpeed);
+                        JumpResetCur += Time.deltaTime;
+                    }  
+                }
+            }
+            
+            if(!isDashing && !EnemyPushed)
+            {
+                if(Input.GetKey(DashKey) && Dir == 1)
+                    Dashmove = StartCoroutine(DashMove(Dir));
+                else if(Input.GetKey(DashKey) && Dir == -1)
+                    Dashmove = StartCoroutine(DashMove(Dir));
+            }
+            
+            if(Input.GetKey(KeyCode.D) && !isDashing)
+            {
+                transform.localScale = new Vector3(1,1,1);
+                Dir = 1;
+            } 
+            
+            if(Input.GetKey(KeyCode.A) && !isDashing)
+            {
+                transform.localScale = new Vector3(-1,1,0);
+                Dir = -1;  
+            } 
         }
+
         if(isGrounded() || isGroundedEnemy())
         {
             JumpResetCur = 0;
             JumpCounter = 0;
         }          
+        
         if(isGrounded() || isGroundedEnemy() || isDashing)
             animator.SetBool("Jump", false);
         else
             animator.SetBool("Jump", true);
-
-        if(!isDashing && !EnemyPushed)
-        {
-            if(Input.GetKey(DashKey) && Dir == 1)
-                Dashmove = StartCoroutine(DashMove(Dir));
-            else if(Input.GetKey(DashKey) && Dir == -1)
-                Dashmove = StartCoroutine(DashMove(Dir));
-        }
-
-        
-        if(Input.GetKey(KeyCode.D) && !isDashing)
-        {
-            transform.localScale = new Vector3(1,1,1);
-            Dir = 1;
-        } 
-        if(Input.GetKey(KeyCode.A) && !isDashing)
-        {
-            transform.localScale = new Vector3(-1,1,0);
-            Dir = -1;  
-        }     
+    
         if(isDashing)
             GunObj.SetActive(false);
         else 
@@ -96,9 +104,17 @@ public class PlayerMovementScr : MonoBehaviour
 
     void FixedUpdate() 
     {
-        if(!isDashing && !EnemyPushed)
+        if(CanMove)
         {
-            PlayerRb.velocity = new Vector2(Movement * MoveSpeed, PlayerRb.velocity.y); 
+            if(!isDashing && !EnemyPushed)
+            {
+                PlayerRb.velocity = new Vector2(Movement * MoveSpeed, PlayerRb.velocity.y); 
+            }
+        }
+        else
+        {
+            PlayerRb.velocity  = new Vector2(0,0);
+            animator.SetFloat("Movement",  0);
         }
     }
 

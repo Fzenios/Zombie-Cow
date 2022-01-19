@@ -30,7 +30,7 @@ public class MilkScr : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        if(other.tag != "Player" && other.tag != "Milk"  )
+        if(other.tag != "Player" && other.tag != "Milk" )
             Destroy(gameObject);
         
     }        
