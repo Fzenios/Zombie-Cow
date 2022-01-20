@@ -6,7 +6,7 @@ public class EnemyBulletScr : MonoBehaviour
 {
     Rigidbody2D BulletRb;
     [HideInInspector] public float BulletDmg;
-    public int Dir;
+    [HideInInspector] public int Dir;
     void Start()
     {
         BulletRb = GetComponent<Rigidbody2D>();

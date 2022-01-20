@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf8cc776ee99edf4bb39d204698c1271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TailDamage: 30
+  TailDamage: 1
   Length: 25
   LineRend: {fileID: 8266288054631836331}
   SegmentPoses: []

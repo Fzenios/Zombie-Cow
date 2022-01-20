@@ -100,7 +100,7 @@ MonoBehaviour:
   ShootPos: {fileID: 3850533235948790233}
   EnemyBullet: {fileID: 8483548476796857875, guid: d29331b5850cad1448980dfbaa72db13, type: 3}
   Distance: 0
-  EnemyDamage: 0
+  EnemyDamage: 1
   enemyRangeMovement: {fileID: 3850533236340240192}
   animator: {fileID: 837886472}
 --- !u!1 &3850533236340240199
@@ -206,7 +206,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHp: 100
   CurrentHp: 0
-  EnemyTouchDmg: 10
+  EnemyTouchDmg: 1
   HealthSlider: {fileID: 8428377579997676422}
   enemyShootScr: {fileID: 3850533235948790232}
 --- !u!114 &3850533236340240192

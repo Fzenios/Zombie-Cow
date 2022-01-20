@@ -21,7 +21,7 @@ public class EnemyBoss1Scr : MonoBehaviour
     public Vector3 ChargeForce;
     public Vector3 BackForce;
     public Vector3 JumpAttackSpeed;
-    public int Dir;
+    [HideInInspector] public int Dir;
     bool ChargeAttack, IsCharging;
     bool Attacking;
     int RandomAttack;
@@ -34,7 +34,10 @@ public class EnemyBoss1Scr : MonoBehaviour
     public Slider HealthSlider;
     Animator animator;
     BoxCollider2D Collider;
-    
+    PlayerHealthScr playerHealthScr;
+    bool Invincible;
+
+
     
     void Start()
     {
@@ -42,6 +45,7 @@ public class EnemyBoss1Scr : MonoBehaviour
         HealthSlider.maxValue = MaxHp;
         FightStart = false;
         PlayerPos = GameObject.FindGameObjectWithTag("Player").transform;
+        playerHealthScr = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealthScr>();
         EnemyRb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         Collider = GetComponent<BoxCollider2D>();
@@ -50,12 +54,12 @@ public class EnemyBoss1Scr : MonoBehaviour
         IsJumping = false;
         IsCharging = false;   
         CanMove = true;  
+        Invincible = false;
     }
 
     void Update()
     {
         HealthSlider.value = CurrentHp;
-        //DistanceWithPlayer = Vector2.Distance(transform.position,PlayerPos.position);
 
         if(FightStart)
         {
@@ -207,29 +211,32 @@ public class EnemyBoss1Scr : MonoBehaviour
 
     public void TakeDmg(float Damage, string TypeDmg)
     {
-        if(TypeDmg == "Range")
+        if(!Invincible)
         {
-            CurrentHp -= Damage;
-            if(CurrentHp <= 0)
+            if(TypeDmg == "Range")
             {
-                animator.SetTrigger("DeadRange");
-                Destroy(gameObject, 5);
-                Dying();
-                return;
+                CurrentHp -= Damage;
+                if(CurrentHp <= 0)
+                {
+                    animator.SetTrigger("DeadRange");
+                    Destroy(gameObject, 5);
+                    Dying();
+                    playerHealthScr.GainHP(1);
+                    return;
+                }
             }
-        }
-        if(TypeDmg == "Melee")
-        {
-            CurrentHp -= Damage;
-            if(CurrentHp <= 0)
+            if(TypeDmg == "Melee")
             {
-                animator.SetTrigger("DeadMelee");
-                Dying();
-                return;
-            }
-        }
-    
-        
+                CurrentHp -= Damage;
+                if(CurrentHp <= 0)
+                {
+                    animator.SetTrigger("DeadMelee");
+                    Dying();
+                    playerHealthScr.GainHP(playerHealthScr.HpMax);
+                    return;
+                }
+            }  
+        }      
     }
     
     void OnCollisionEnter2D(Collision2D other) 
@@ -249,10 +256,11 @@ public class EnemyBoss1Scr : MonoBehaviour
                     PlayerRb.AddForce(BackForce, ForceMode2D.Impulse);
                 else
                     PlayerRb.AddForce(-BackForce, ForceMode2D.Impulse);
-                other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(EnemyheavyDmg, Dir);
+                
+                playerHealthScr.TakeDmg(EnemyheavyDmg, Dir);
             }
 
-            other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(EnemyTouchDmg, Dir);
+            playerHealthScr.TakeDmg(EnemyTouchDmg, Dir);
             StartCoroutine(StopSlide());
         }           
     }
@@ -260,7 +268,7 @@ public class EnemyBoss1Scr : MonoBehaviour
     {
         if(other.transform.tag == "Player")
         {
-            other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(EnemyTouchDmg, Dir);
+            playerHealthScr.TakeDmg(EnemyTouchDmg, Dir);
         }
     }
     IEnumerator SendBack()
@@ -271,6 +279,7 @@ public class EnemyBoss1Scr : MonoBehaviour
     }
     void Dying()
     {
+        Invincible = true;
         FightStart = false;
         animator.SetBool("Walk", false);
         EnemyRb.velocity = new Vector2(0f, 0f);

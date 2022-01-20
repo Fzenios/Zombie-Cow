@@ -9,8 +9,6 @@ public class EnemyOneHitScr : MonoBehaviour
     {
         enemyMeleeHealthScr = GetComponent<EnemyMeleeHealthScr>();
     }
-
-    // Update is called once per frame
     void Update()
     {
         
@@ -19,7 +17,8 @@ public class EnemyOneHitScr : MonoBehaviour
     {
         if(other.transform.tag == "Player")
         {
-            enemyMeleeHealthScr.TakeDmg(100000, "Melee");            
+            if(other.gameObject.GetComponent<PlayerMovementScr>().isDashing)
+                enemyMeleeHealthScr.TakeDmg(100000, "Melee");            
         }        
     }
 }

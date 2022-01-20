@@ -17,12 +17,14 @@ public class EnemyRangeHealthScr : MonoBehaviour
     EnemyRangeMovement enemyRangeMovement;
     public EnemyShootScr enemyShootScr;
     bool Invincible;
+    PlayerHealthScr playerHealthScr;
     
     void Start()
     {
         CurrentHp = MaxHp;
         HealthSlider.maxValue = MaxHp;
         PlayerPos = GameObject.FindGameObjectWithTag("Player").transform;
+        playerHealthScr = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealthScr>();
         Collider = GetComponent<BoxCollider2D>();
         EnemyRb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -49,6 +51,7 @@ public class EnemyRangeHealthScr : MonoBehaviour
                 animator.SetTrigger("Death");
                 Destroy(gameObject, 5);
                 Dying();
+                playerHealthScr.GainHP(1);
                 return;
             }
         }
@@ -63,6 +66,7 @@ public class EnemyRangeHealthScr : MonoBehaviour
             { 
                 animator.SetTrigger("DeathMetal");
                 Dying();
+                playerHealthScr.GainHP(playerHealthScr.HpMax);
                 return;
             }
         }    
@@ -95,14 +99,14 @@ public class EnemyRangeHealthScr : MonoBehaviour
                 Dir = 1;
             else if(Distance > 0)
                 Dir = -1;
-            other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(EnemyTouchDmg, Dir);
+            playerHealthScr.TakeDmg(EnemyTouchDmg, Dir);
         }             
     }
     void OnCollisionStay2D(Collision2D other) 
     {
         if(other.transform.tag == "Player")
         {
-            other.gameObject.GetComponent<PlayerHealthScr>().TakeDmg(EnemyTouchDmg, Dir);
+            playerHealthScr.TakeDmg(EnemyTouchDmg, Dir);
         }
     }
 }

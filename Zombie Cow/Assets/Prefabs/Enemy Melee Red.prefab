@@ -103,7 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHp: 100
   CurrentHp: 0
-  EnemyTouchDmg: 10
+  EnemyTouchDmg: 1
   HealthSlider: {fileID: 5726730139708454690}
 --- !u!114 &7891122050332704300
 MonoBehaviour:
@@ -123,8 +123,8 @@ MonoBehaviour:
   EnemySpeed: 3
   DashSpeed: {x: 10, y: 0}
   drawline: 0.3
-  ChargeDmg: 20
-  PunchDmg: 0
+  ChargeDmg: 1
+  PunchDmg: 1
 --- !u!50 &7891122050332704301
 Rigidbody2D:
   serializedVersion: 4

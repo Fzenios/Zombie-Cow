@@ -9,12 +9,13 @@ public class PlayerHealthScr : MonoBehaviour
     public float HpMax, HpCurrent;
     public float DashDmg;
     public TMP_Text HealthTxt;
-    public bool Invincible;
+    [HideInInspector] public bool Invincible;
     PlayerMovementScr playerMovementScr;
     Rigidbody2D PlayerRb;
     public Vector3 ForceBack;
     public Animator CameraAnimator, PlayerAnimator;
     public SpriteRenderer Player;
+    public GameObject[] Hearts;
     
     void Start()
     {
@@ -22,11 +23,17 @@ public class PlayerHealthScr : MonoBehaviour
         HpCurrent = HpMax;
         Invincible = false;
         PlayerRb = GetComponent<Rigidbody2D>();
+        
+        for (int i = 0; i < Hearts.Length; i++)
+        {
+            Hearts[i].SetActive(true);    
+        }
     }
 
     void Update()
     {
-        HealthTxt.text = HpCurrent.ToString();
+        
+        //HealthTxt.text = HpCurrent.ToString();
     }
     public void TakeDmg(float Damage, int Dir)
     {
@@ -35,9 +42,17 @@ public class PlayerHealthScr : MonoBehaviour
             Invincible = true;
 
             HpCurrent -= Damage;
-            
+            if(HpCurrent < 0)
+                HpCurrent = 0;
+
+            for (int i = (int)HpCurrent; i < HpMax; i++)
+            {
+                Hearts[i].SetActive(false);
+            }
+
             if(HpCurrent <= 0)
-                Destroy(gameObject);
+                StartCoroutine(CheckDeath());
+                
 
             CameraAnimator.SetTrigger("CamTrig");
 
@@ -51,6 +66,12 @@ public class PlayerHealthScr : MonoBehaviour
 
             StartCoroutine(InvincibleStat());
         }
+    }
+    IEnumerator CheckDeath()
+    {
+        yield return new WaitForSeconds(1);
+        if(HpCurrent <= 0)
+            Destroy(gameObject);
     }
     IEnumerator InvincibleStat()
     {
@@ -83,9 +104,16 @@ public class PlayerHealthScr : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         playerMovementScr.EnemyPushed = false;
     }
-    void OnTriggerEnter2D(Collider2D other) 
+    public void GainHP(float Hp)
     {
-        
+        HpCurrent += Hp;
+        if(HpCurrent > HpMax)
+            HpCurrent = HpMax;
+
+        for (int i = 0; i < (int)HpCurrent; i++)
+            {
+                Hearts[i].SetActive(true);
+            }
     }
     void OnCollisionEnter2D(Collision2D other) 
     {

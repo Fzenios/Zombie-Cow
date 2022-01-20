@@ -9,9 +9,16 @@ public class CollidersScr : MonoBehaviour
     {
         if(other.tag == "Player")
         {
-            eventsScr.NextChat();
-            eventsScr.CanMoveFunc();
-            Destroy(gameObject, 1);    
+            if(eventsScr.ChatCounter != 33)
+            {
+                eventsScr.NextChat();
+                eventsScr.CanMoveFunc();
+                Destroy(gameObject, 1);    
+            }
+            else
+            {
+                eventsScr.ChangeMap();
+            }
         }      
     }
 }

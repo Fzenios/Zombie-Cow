@@ -9,11 +9,14 @@ public class EventsScr : MonoBehaviour
     public GameObject[] ChatBubles;
     public int ChatCounter;
     public PlayerMovementScr playerMovementScr;
+    public GameObject Level1, Level2, Grid1, Grid2;
+    public Animator CamAnimator;
     void Start()
     {
         ChatCounter = 0;
         StartCoroutine(StartGame());
         playerMovementScr.CanMove = false;
+        CamAnimator.SetTrigger("Entrance");
     }
 
     void Update()
@@ -48,5 +51,14 @@ public class EventsScr : MonoBehaviour
     public void CanMoveFunc()
     {
         playerMovementScr.CanMove =! playerMovementScr.CanMove;
+    }
+    public void ChangeMap()
+    {
+        Level1.SetActive(false); 
+        Grid1.SetActive(false);
+        Grid2.SetActive(true);
+        Level2.SetActive(true);
+        PlayerPos.position = new Vector3(-109,7.34f,0);
+        CamAnimator.SetTrigger("Entrance");
     }
 }
