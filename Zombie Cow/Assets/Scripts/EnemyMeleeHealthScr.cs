@@ -53,7 +53,6 @@ public class EnemyMeleeHealthScr : MonoBehaviour
                 Destroy(gameObject, 5);
                 Dying();
                 playerHealthScr.GainHP(1);
-                return;
             }
         }
         if(TypeDmg == "Melee")
@@ -68,7 +67,6 @@ public class EnemyMeleeHealthScr : MonoBehaviour
                 animator.SetTrigger("DeathMetal");
                 Dying();
                 playerHealthScr.GainHP(playerHealthScr.HpMax);
-                return;
             }
         }    
     }

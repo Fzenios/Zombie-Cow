@@ -74,13 +74,13 @@ public class PlayerMovementScr : MonoBehaviour
             
             if(Input.GetKey(KeyCode.D) && !isDashing)
             {
-                transform.localScale = new Vector3(1,1,1);
+                transform.localScale = new Vector3(4,4,0);
                 Dir = 1;
             } 
             
             if(Input.GetKey(KeyCode.A) && !isDashing)
             {
-                transform.localScale = new Vector3(-1,1,0);
+                transform.localScale = new Vector3(-4,4,0);
                 Dir = -1;  
             } 
         }
@@ -118,7 +118,7 @@ public class PlayerMovementScr : MonoBehaviour
         }
     }
 
-    bool isGrounded()
+    public bool isGrounded()
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(PlayerBox.bounds.center, PlayerBox.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
         return raycastHit.collider != null;
@@ -176,17 +176,11 @@ public class PlayerMovementScr : MonoBehaviour
         }  
     }
     
-    void OnTriggerEnter2D(Collider2D other) 
-    {
-        if(other.tag == "BossTrig")
-        {
-            enemyBoss1Scr.FightStart = true;
-        }
-    }
     IEnumerator StopPush(Rigidbody2D EnemyRb)
     {
         yield return new WaitForSeconds(1);
-        EnemyRb.velocity = new Vector2(0f, 0f);
+        if(EnemyRb != null)
+            EnemyRb.velocity = new Vector2(0f, 0f);
     }
     
 }

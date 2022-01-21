@@ -8,13 +8,12 @@ public class PlayerHealthScr : MonoBehaviour
 {
     public float HpMax, HpCurrent;
     public float DashDmg;
-    public TMP_Text HealthTxt;
     [HideInInspector] public bool Invincible;
     PlayerMovementScr playerMovementScr;
     Rigidbody2D PlayerRb;
     public Vector3 ForceBack;
     public Animator CameraAnimator, PlayerAnimator;
-    public SpriteRenderer Player;
+    public SpriteRenderer PlayerSprite;
     public GameObject[] Hearts;
     
     void Start()
@@ -75,25 +74,25 @@ public class PlayerHealthScr : MonoBehaviour
     }
     IEnumerator InvincibleStat()
     {
-        Player.color = new Color32(255,255,255,140);   
+        PlayerSprite.color = new Color32(255,255,255,140);   
         yield return new WaitForSeconds(0.2f);
-        Player.color = new Color32(255,255,255,255);   
+        PlayerSprite.color = new Color32(255,255,255,255);   
         yield return new WaitForSeconds(0.2f);
-        Player.color = new Color32(255,255,255,140);   
+        PlayerSprite.color = new Color32(255,255,255,140);   
         yield return new WaitForSeconds(0.2f);
-        Player.color = new Color32(255,255,255,255);   
+        PlayerSprite.color = new Color32(255,255,255,255);   
         yield return new WaitForSeconds(0.2f);
-        Player.color = new Color32(255,255,255,140);   
+        PlayerSprite.color = new Color32(255,255,255,140);   
         yield return new WaitForSeconds(0.2f);
-        Player.color = new Color32(255,255,255,255); 
+        PlayerSprite.color = new Color32(255,255,255,255); 
         yield return new WaitForSeconds(0.2f);
-        Player.color = new Color32(255,255,255,140);   
+        PlayerSprite.color = new Color32(255,255,255,140);   
         yield return new WaitForSeconds(0.2f);
-        Player.color = new Color32(255,255,255,255); 
+        PlayerSprite.color = new Color32(255,255,255,255); 
         yield return new WaitForSeconds(0.2f);
-        Player.color = new Color32(255,255,255,140);   
+        PlayerSprite.color = new Color32(255,255,255,140);   
         yield return new WaitForSeconds(0.2f);
-        Player.color = new Color32(255,255,255,255); 
+        PlayerSprite.color = new Color32(255,255,255,255); 
         yield return new WaitForSeconds(0.2f);        
         Invincible = false;
     }

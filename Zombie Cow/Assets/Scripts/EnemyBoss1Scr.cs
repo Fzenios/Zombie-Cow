@@ -26,16 +26,19 @@ public class EnemyBoss1Scr : MonoBehaviour
     bool Attacking;
     int RandomAttack;
     public PlayerMovementScr playerMovementScr;
-    public bool JumpAttack;
+    bool JumpAttack;
     public Transform JumpPos;
     public float JumpSpeed;
     bool IsJumping;
     bool CanMove;
     public Slider HealthSlider;
     Animator animator;
-    BoxCollider2D Collider;
+    BoxCollider2D ColliderBox;
+    CircleCollider2D ColliderCircle;
     PlayerHealthScr playerHealthScr;
     bool Invincible;
+    public bool LoadHp;
+    public EventsScr eventsScr;
 
 
     
@@ -43,26 +46,42 @@ public class EnemyBoss1Scr : MonoBehaviour
     {
         CurrentHp = MaxHp;
         HealthSlider.maxValue = MaxHp;
+        HealthSlider.value = 1;
         FightStart = false;
         PlayerPos = GameObject.FindGameObjectWithTag("Player").transform;
         playerHealthScr = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealthScr>();
         EnemyRb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        Collider = GetComponent<BoxCollider2D>();
+        ColliderBox = GetComponent<BoxCollider2D>();
+        ColliderCircle = GetComponent<CircleCollider2D>();
         RangeAttack = false;
         JumpAttack = false;   
         IsJumping = false;
         IsCharging = false;   
         CanMove = true;  
         Invincible = false;
+        LoadHp = false;
     }
 
     void Update()
     {
-        HealthSlider.value = CurrentHp;
+        if(LoadHp)
+        {
+            if(HealthSlider.value < MaxHp)
+            {
+                HealthSlider.value += Time.deltaTime * 300;
+            }
+            else
+            {
+                LoadHp = false;
+                FightStart = true;
+                playerMovementScr.CanMove = true;
+            }   
+        }     
 
         if(FightStart)
         {
+            HealthSlider.value = CurrentHp;
             if(!Attacking)
             {
                 RandomAttack = Random.Range(1,4);
@@ -160,15 +179,19 @@ public class EnemyBoss1Scr : MonoBehaviour
     IEnumerator Chargeattack()
     {
         yield return new WaitForSeconds(3);
+        ColliderBox.enabled = false;
         CanMove = false;
         EnemyRb.velocity = new Vector2(0f, 0f);
         ChargeAttack = true;
         IsCharging = true;
         yield return new WaitForSeconds(3);
+        ColliderBox.enabled = false;
         EnemyRb.velocity = new Vector2(0f, 0f);
         ChargeAttack = true;
         IsCharging = true;
         yield return new WaitForSeconds(4);
+        animator.SetTrigger("ChargeLoop");
+        ColliderBox.enabled = true;
         CanMove = true;
         EnemyRb.velocity = new Vector2(0f, 0f);
         Attacking = false;
@@ -222,7 +245,6 @@ public class EnemyBoss1Scr : MonoBehaviour
                     Destroy(gameObject, 5);
                     Dying();
                     playerHealthScr.GainHP(1);
-                    return;
                 }
             }
             if(TypeDmg == "Melee")
@@ -233,7 +255,6 @@ public class EnemyBoss1Scr : MonoBehaviour
                     animator.SetTrigger("DeadMelee");
                     Dying();
                     playerHealthScr.GainHP(playerHealthScr.HpMax);
-                    return;
                 }
             }  
         }      
@@ -245,6 +266,9 @@ public class EnemyBoss1Scr : MonoBehaviour
         {
             if(IsCharging || IsJumping)
             {   
+                if(IsCharging)
+                    animator.SetTrigger("ChargeLoop");
+                ColliderBox.enabled = true;
                 IsCharging = false;
                 IsJumping = false;
                 EnemyRb.velocity = new Vector2(0f, 0f);
@@ -257,7 +281,7 @@ public class EnemyBoss1Scr : MonoBehaviour
                 else
                     PlayerRb.AddForce(-BackForce, ForceMode2D.Impulse);
                 
-                playerHealthScr.TakeDmg(EnemyheavyDmg, Dir);
+                playerHealthScr.TakeDmg(EnemyheavyDmg, Dir);               
             }
 
             playerHealthScr.TakeDmg(EnemyTouchDmg, Dir);
@@ -288,18 +312,22 @@ public class EnemyBoss1Scr : MonoBehaviour
         if(RandomAttack != 3)
         {
             EnemyRb.gravityScale = 0;
-            Collider.enabled = false;
+            ColliderBox.enabled = false;
+            ColliderCircle.enabled = false;
         }
         else 
             StartCoroutine(WaitForDrop());
+        
+        eventsScr.AfterBoss();
     }
     IEnumerator WaitForDrop()
     {
         JumpAttack = false;
         EnemyRb.gravityScale = 3;
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1.5f);
         EnemyRb.gravityScale = 0;
-        Collider.enabled = false;
+        ColliderBox.enabled = false;
+        ColliderCircle.enabled = false;
     }
     IEnumerator StopSlide()
     {

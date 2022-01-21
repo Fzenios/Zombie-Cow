@@ -207,7 +207,7 @@ MonoBehaviour:
   MaxHp: 100
   CurrentHp: 0
   EnemyTouchDmg: 1
-  HealthSlider: {fileID: 8428377579997676422}
+  HealthSlider: {fileID: 5546216922891988061}
   enemyShootScr: {fileID: 3850533235948790232}
 --- !u!114 &3850533236340240192
 MonoBehaviour:
@@ -261,7 +261,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.014588527, y: -0.018493295}
+  m_Offset: {x: -0.014588527, y: -0.019438088}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -272,7 +272,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.10838093, y: 0.6013665}
+  m_Size: {x: 0.10838093, y: 0.6032561}
   m_EdgeRadius: 0
 --- !u!95 &837886472
 Animator:
@@ -539,9 +539,9 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7193037351577924348, guid: afd53a0ee172dd04f8649f269dd68992, type: 3}
   m_PrefabInstance: {fileID: 5546216923208923562}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8428377579997676422 stripped
+--- !u!114 &5546216922891988061 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4039590503304428076, guid: afd53a0ee172dd04f8649f269dd68992, type: 3}
+  m_CorrespondingSourceObject: {fileID: 320607735, guid: afd53a0ee172dd04f8649f269dd68992, type: 3}
   m_PrefabInstance: {fileID: 5546216923208923562}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

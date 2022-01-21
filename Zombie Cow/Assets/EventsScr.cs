@@ -11,6 +11,9 @@ public class EventsScr : MonoBehaviour
     public PlayerMovementScr playerMovementScr;
     public GameObject Level1, Level2, Grid1, Grid2;
     public Animator CamAnimator;
+    public EnemyBoss1Scr enemyBoss1Scr;
+    public GameObject BossHp;
+    public GameObject TileBlock;
     void Start()
     {
         ChatCounter = 0;
@@ -35,7 +38,6 @@ public class EventsScr : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
         NextChat();
-
     }
     
     public void NextChat()
@@ -60,5 +62,19 @@ public class EventsScr : MonoBehaviour
         Level2.SetActive(true);
         PlayerPos.position = new Vector3(-109,7.34f,0);
         CamAnimator.SetTrigger("Entrance");
+    }
+    public void BossFight()
+    {
+        enemyBoss1Scr.LoadHp = true;
+        BossHp.SetActive(true);
+    }
+    public void AfterBoss()
+    {
+        StartCoroutine(AfterbossWait());
+    }
+    IEnumerator AfterbossWait()
+    {
+        yield return new WaitForSeconds(15);
+        TileBlock.SetActive(false);
     }
 }
