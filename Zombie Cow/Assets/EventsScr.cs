@@ -14,6 +14,7 @@ public class EventsScr : MonoBehaviour
     public EnemyBoss1Scr enemyBoss1Scr;
     public GameObject BossHp;
     public GameObject TileBlock;
+    public Animator PlayerAnimator;
     void Start()
     {
         ChatCounter = 0;
@@ -76,5 +77,9 @@ public class EventsScr : MonoBehaviour
     {
         yield return new WaitForSeconds(15);
         TileBlock.SetActive(false);
+    }
+    public void ThrowCredits()
+    {
+        PlayerAnimator.SetTrigger("HeadBang");
     }
 }

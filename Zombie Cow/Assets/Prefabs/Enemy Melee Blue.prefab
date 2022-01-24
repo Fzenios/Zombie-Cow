@@ -214,6 +214,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6566694094733371284}
     m_Modifications:
+    - target: {fileID: 633486482, guid: afd53a0ee172dd04f8649f269dd68992, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 633486482, guid: afd53a0ee172dd04f8649f269dd68992, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 633486482, guid: afd53a0ee172dd04f8649f269dd68992, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.0016174316
+      objectReference: {fileID: 0}
     - target: {fileID: 2477832604300985016, guid: afd53a0ee172dd04f8649f269dd68992, type: 3}
       propertyPath: m_Name
       value: CanvasEnemy

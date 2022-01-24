@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: New Sprite Atlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 0
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: 21ffcdb64227c9e429ff0b2f35da7100, type: 3}
+    - {fileID: 2800000, guid: 016e2bd74f726664b97ede35f11cda80, type: 3}
+    totalSpriteSurfaceArea: 512
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 4048003069518519096, guid: 21ffcdb64227c9e429ff0b2f35da7100, type: 3}
+  - {fileID: -6235522330520000181, guid: 21ffcdb64227c9e429ff0b2f35da7100, type: 3}
+  - {fileID: -5034519720740184509, guid: 21ffcdb64227c9e429ff0b2f35da7100, type: 3}
+  - {fileID: 1155769755816791368, guid: 21ffcdb64227c9e429ff0b2f35da7100, type: 3}
+  - {fileID: -8400976823037284825, guid: 21ffcdb64227c9e429ff0b2f35da7100, type: 3}
+  - {fileID: -7099999246599137441, guid: 21ffcdb64227c9e429ff0b2f35da7100, type: 3}
+  - {fileID: 8035318031091402814, guid: 21ffcdb64227c9e429ff0b2f35da7100, type: 3}
+  - {fileID: 21300000, guid: 016e2bd74f726664b97ede35f11cda80, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - TilemapLevel1_1
+  - TilemapLevel1_0
+  - TilemapLevel1_3
+  - TilemapLevel1_2
+  - TilemapLevel1_5
+  - TilemapLevel1_4
+  - TilemapLevel1_6
+  - Fence
+  m_RenderDataMap: {}
+  m_Tag: New Sprite Atlas
+  m_IsVariant: 0
