@@ -14,13 +14,20 @@ public class EventsScr : MonoBehaviour
     public EnemyBoss1Scr enemyBoss1Scr;
     public GameObject BossHp;
     public GameObject TileBlock;
-    public Animator PlayerAnimator;
+    public Animator PlayerAnimator, GameOverPlayerAnimator;
+    public GameObject GameOverMenu;
+    public static bool AllCanMove;
+    int CheckPointCount;
+    bool RestartBool;
+    Vector2 LastCheckPointPos;
     void Start()
     {
         ChatCounter = 0;
         StartCoroutine(StartGame());
         playerMovementScr.CanMove = false;
         CamAnimator.SetTrigger("Entrance");
+        AllCanMove = true;
+        RestartBool = false;
     }
 
     void Update()
@@ -82,4 +89,32 @@ public class EventsScr : MonoBehaviour
     {
         PlayerAnimator.SetTrigger("HeadBang");
     }
+    public void RestartGame()
+    {
+        if(!RestartBool)
+        {
+            RestartBool = true;
+            GameOverPlayerAnimator.SetTrigger("Head");
+            
+            StartCoroutine(WaitForGameOver());
+            IEnumerator WaitForGameOver()
+            {
+                yield return new WaitForSeconds(2f);
+                GameOverMenu.SetActive(false);
+                RestartBool = false;
+            }
+        }
+    }
+    void Checkpoint()
+    {
+
+    }
+    
+    public void CheckpointColliders(Vector2 CheckPointPos)
+    {
+        LastCheckPointPos = CheckPointPos;
+        CheckPointCount++;
+    }  
+    
+
 }

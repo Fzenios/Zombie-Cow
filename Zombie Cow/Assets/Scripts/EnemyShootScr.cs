@@ -22,22 +22,25 @@ public class EnemyShootScr : MonoBehaviour
 
     void Update()
     {
-        Vector3 difference = Player.position - transform.position;
-        //Distance = Player.position.x - transform.position.x;
-        Distance = Vector2.Distance(transform.position,Player.position);
-        float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0f, 0f, rotZ );
+        if(EventsScr.AllCanMove)
+        {
+            Vector3 difference = Player.position - transform.position;
+            //Distance = Player.position.x - transform.position.x;
+            Distance = Vector2.Distance(transform.position,Player.position);
+            float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0f, 0f, rotZ );
 
-        if(EnemyShootTimerCur >= EnemyShootTimer)
-            {
-                if(Distance <= enemyRangeMovement.DistanceToActivate)
+            if(EnemyShootTimerCur >= EnemyShootTimer)
                 {
-                    animator.SetTrigger("Throw");
-                    Shoot();
+                    if(Distance <= enemyRangeMovement.DistanceToActivate)
+                    {
+                        animator.SetTrigger("Throw");
+                        Shoot();
+                    }
                 }
-            }
-        else
-            EnemyShootTimerCur += Time.deltaTime;
+            else
+                EnemyShootTimerCur += Time.deltaTime;
+        }
     }
 
     void Shoot()

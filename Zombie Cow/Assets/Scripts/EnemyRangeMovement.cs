@@ -13,7 +13,7 @@ public class EnemyRangeMovement : MonoBehaviour
     public float DistanceToActivate;
     float DistanceWithPlayer;
     public float drawline;
-    public int Dir;
+    [HideInInspector] public int Dir;
     Animator animator;
     void Start()
     {
@@ -25,43 +25,46 @@ public class EnemyRangeMovement : MonoBehaviour
 
     void Update()
     {
-        Debug.DrawLine(transform.position, new Vector3(transform.position.x + drawline, transform.position.y, transform.position.z), Color.cyan);
-        DistanceWithPlayer = Vector2.Distance(transform.position,PlayerPos.position);
-        
-        if(DistanceWithPlayer < DistanceToActivate)
-            FightStart = true;
-        else 
+        if(EventsScr.AllCanMove)
         {
-            FightStart = false;
-            EnemyRb.velocity = new Vector2(0f, 0f);
-        }
-
-        if(FightStart)
-        {
-            if(Vector2.Distance(transform.position,PlayerPos.position) > EnemySafeDistance )
-            {
-                animator.SetBool("Walk", true);
-                transform.position = Vector2.MoveTowards(transform.position, PlayerPos.position, Time.deltaTime * EnemySpeed);
-            }
-            else if (Vector2.Distance(transform.position,PlayerPos.position) < EnemyUnSafeDistance )
-            {
-                animator.SetBool("Walk", true);
-                transform.position = Vector2.MoveTowards(transform.position, PlayerPos.position, -Time.deltaTime * EnemySpeed);
-            }
-            else 
-                animator.SetBool("Walk", false);
+            Debug.DrawLine(transform.position, new Vector3(transform.position.x + drawline, transform.position.y, transform.position.z), Color.cyan);
+            DistanceWithPlayer = Vector2.Distance(transform.position,PlayerPos.position);
             
-            Distance = PlayerPos.position.x - transform.position.x;
-            if(Distance < 0)
+            if(DistanceWithPlayer < DistanceToActivate)
+                FightStart = true;
+            else 
             {
-                transform.localScale = new Vector3(-4,4,0);
-                Dir = 1;
-            } 
-            else if(Distance > 0)
+                FightStart = false;
+                EnemyRb.velocity = new Vector2(0f, 0f);
+            }
+        
+            if(FightStart)
             {
-                transform.localScale = new Vector3(4,4,0);
-                Dir = -1;
-            } 
+                if(Vector2.Distance(transform.position,PlayerPos.position) > EnemySafeDistance )
+                {
+                    animator.SetBool("Walk", true);
+                    transform.position = Vector2.MoveTowards(transform.position, PlayerPos.position, Time.deltaTime * EnemySpeed);
+                }
+                else if (Vector2.Distance(transform.position,PlayerPos.position) < EnemyUnSafeDistance )
+                {
+                    animator.SetBool("Walk", true);
+                    transform.position = Vector2.MoveTowards(transform.position, PlayerPos.position, -Time.deltaTime * EnemySpeed);
+                }
+                else 
+                    animator.SetBool("Walk", false);
+                
+                Distance = PlayerPos.position.x - transform.position.x;
+                if(Distance < 0)
+                {
+                    transform.localScale = transform.localScale;
+                    Dir = 1;
+                } 
+                else if(Distance > 0)
+                {
+                    transform.localScale = new Vector3(4,4,0);
+                    Dir = -1;
+                } 
+            }
         }
     }
     void OnCollisionEnter2D(Collision2D other) 

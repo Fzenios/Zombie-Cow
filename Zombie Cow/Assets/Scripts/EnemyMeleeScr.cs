@@ -28,63 +28,64 @@ public class EnemyMeleeScr : MonoBehaviour
     }
     void Update()
     {
-        
-        Debug.DrawLine(transform.position, new Vector3(transform.position.x + drawline, transform.position.y, transform.position.z), Color.cyan);
-        DistanceWithPlayer = Vector2.Distance(transform.position,PlayerPos.position);
-        if(DistanceWithPlayer < DistanceToActivate)
+        if(EventsScr.AllCanMove)
         {
-            FightStart = true;
-        }
-        else
-        {
-            FightStart = false;
-            EnemyRb.velocity = new Vector2(0f, 0f);
-            animator.SetBool("Walk", false);
-        }
-        
-        if(FightStart)
-        {
-            
-            if(Vector2.Distance(transform.position,PlayerPos.position) > EnemySafeDistance )
-                transform.position = Vector2.MoveTowards(transform.position, PlayerPos.position, Time.deltaTime * EnemySpeed);
-            else if (Vector2.Distance(transform.position,PlayerPos.position) < EnemyUnSafeDistance )
-                transform.position = Vector2.MoveTowards(transform.position, PlayerPos.position, -Time.deltaTime * EnemySpeed);
-            
-            if(Vector2.Distance(transform.position,PlayerPos.position) >= 0.8 && !IsCharging)
-                animator.SetBool("Walk", true);
+            Debug.DrawLine(transform.position, new Vector3(transform.position.x + drawline, transform.position.y, transform.position.z), Color.cyan);
+            DistanceWithPlayer = Vector2.Distance(transform.position,PlayerPos.position);
+            if(DistanceWithPlayer < DistanceToActivate)
+            {
+                FightStart = true;
+            }
             else
+            {
+                FightStart = false;
+                EnemyRb.velocity = new Vector2(0f, 0f);
                 animator.SetBool("Walk", false);
-
-            if(Vector2.Distance(transform.position,PlayerPos.position) < 0.8f && !IsCharging)
-                animator.SetBool("Punch", true);
-            else
-                animator.SetBool("Punch", false);
-
-            if(CanCharge)
+            }
+            if(FightStart)
             {
-                int RandomInt = Random.Range(0,500);
-                if(RandomInt == 0)
-                {
-                    IsCharging = true;
-                    CanCharge = false;
+                
+                if(Vector2.Distance(transform.position,PlayerPos.position) > EnemySafeDistance )
+                    transform.position = Vector2.MoveTowards(transform.position, PlayerPos.position, Time.deltaTime * EnemySpeed);
+                else if (Vector2.Distance(transform.position,PlayerPos.position) < EnemyUnSafeDistance )
+                    transform.position = Vector2.MoveTowards(transform.position, PlayerPos.position, -Time.deltaTime * EnemySpeed);
+                
+                if(Vector2.Distance(transform.position,PlayerPos.position) >= 0.8 && !IsCharging)
+                    animator.SetBool("Walk", true);
+                else
                     animator.SetBool("Walk", false);
-                    animator.SetTrigger("Charge");
-                    StartCoroutine(Charge());
-                }
-            }
 
-            Distance = PlayerPos.position.x - transform.position.x;
-            if(Distance < 0)
-            {
-                transform.localScale = new Vector3(-4,4f,0); 
-                Dir = 1;
-            }
-            else if(Distance > 0)
-            {
-                transform.localScale = new Vector3(4,4f,0);
-                Dir = -1;   
-            }
-        }        
+                if(Vector2.Distance(transform.position,PlayerPos.position) < 0.8f && !IsCharging)
+                    animator.SetBool("Punch", true);
+                else
+                    animator.SetBool("Punch", false);
+
+                if(CanCharge)
+                {
+                    int RandomInt = Random.Range(0,500);
+                    if(RandomInt == 0)
+                    {
+                        IsCharging = true;
+                        CanCharge = false;
+                        animator.SetBool("Walk", false);
+                        animator.SetTrigger("Charge");
+                        StartCoroutine(Charge());
+                    }
+                }
+
+                Distance = PlayerPos.position.x - transform.position.x;
+                if(Distance < 0)
+                {
+                    transform.localScale = new Vector3(-4,4f,0); 
+                    Dir = 1;
+                }
+                else if(Distance > 0)
+                {
+                    transform.localScale = new Vector3(4,4f,0);
+                    Dir = -1;   
+                }
+            } 
+        }       
     }
     IEnumerator Charge()
     {

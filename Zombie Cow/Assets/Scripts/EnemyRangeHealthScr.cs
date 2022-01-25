@@ -18,6 +18,7 @@ public class EnemyRangeHealthScr : MonoBehaviour
     public EnemyShootScr enemyShootScr;
     bool Invincible;
     PlayerHealthScr playerHealthScr;
+    CreditsScr creditsScr;
     
     void Start()
     {
@@ -29,6 +30,7 @@ public class EnemyRangeHealthScr : MonoBehaviour
         EnemyRb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         enemyRangeMovement = GetComponent<EnemyRangeMovement>();
+        creditsScr = GameObject.FindGameObjectWithTag("PublicScripts").GetComponent<CreditsScr>();
         Invincible = false;
     }
 
@@ -66,6 +68,7 @@ public class EnemyRangeHealthScr : MonoBehaviour
             { 
                 animator.SetTrigger("DeathMetal");
                 Dying();
+                creditsScr.SpownCrowd();
                 playerHealthScr.GainHP(playerHealthScr.HpMax);
                 return;
             }

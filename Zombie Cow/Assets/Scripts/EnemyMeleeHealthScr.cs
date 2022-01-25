@@ -18,6 +18,7 @@ public class EnemyMeleeHealthScr : MonoBehaviour
     EnemyMeleeScr enemyMeleeScr;
     bool Invincible;
     PlayerHealthScr playerHealthScr;
+    CreditsScr creditsScr;
     
     void Start()
     {
@@ -30,6 +31,7 @@ public class EnemyMeleeHealthScr : MonoBehaviour
         EnemyRb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         enemyMeleeScr = GetComponent<EnemyMeleeScr>();
+        creditsScr = GameObject.FindGameObjectWithTag("PublicScripts").GetComponent<CreditsScr>();
         Invincible = false;
     }
 
@@ -66,6 +68,7 @@ public class EnemyMeleeHealthScr : MonoBehaviour
             { 
                 animator.SetTrigger("DeathMetal");
                 Dying();
+                creditsScr.SpownCrowd();
                 playerHealthScr.GainHP(playerHealthScr.HpMax);
             }
         }    

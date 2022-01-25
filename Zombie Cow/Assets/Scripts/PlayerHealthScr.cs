@@ -15,6 +15,7 @@ public class PlayerHealthScr : MonoBehaviour
     public Animator CameraAnimator, PlayerAnimator;
     public SpriteRenderer PlayerSprite;
     public GameObject[] Hearts;
+    public GameObject GameOverMenu; 
     
     void Start()
     {
@@ -32,7 +33,6 @@ public class PlayerHealthScr : MonoBehaviour
     void Update()
     {
         
-        //HealthTxt.text = HpCurrent.ToString();
     }
     public void TakeDmg(float Damage, int Dir)
     {
@@ -68,9 +68,15 @@ public class PlayerHealthScr : MonoBehaviour
     }
     IEnumerator CheckDeath()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.1f);
         if(HpCurrent <= 0)
-            Destroy(gameObject);
+            {
+                EventsScr.AllCanMove = false;
+                PlayerAnimator.SetTrigger("Dead");
+                yield return new WaitForSeconds(0.5f);
+                GameOverMenu.SetActive(true);
+                PlayerRb.velocity = Vector2.zero;
+            }
     }
     IEnumerator InvincibleStat()
     {
@@ -98,7 +104,6 @@ public class PlayerHealthScr : MonoBehaviour
     }
     IEnumerator EnemyPushed()
     {
-        
         playerMovementScr.EnemyPushed = true;
         yield return new WaitForSeconds(0.5f);
         playerMovementScr.EnemyPushed = false;
