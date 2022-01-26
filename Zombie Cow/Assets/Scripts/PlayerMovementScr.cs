@@ -17,12 +17,12 @@ public class PlayerMovementScr : MonoBehaviour
     Coroutine Dashmove;
     float Movement;
     [HideInInspector] public bool EnemyPushed;
-    public EnemyBoss1Scr enemyBoss1Scr;
     int Dir;
     public Animator animator;
     public GameObject GunObj;
     int JumpCounter;
     public bool CanMove;
+    public AllData allData;
     
     void Start()
     {
@@ -31,6 +31,11 @@ public class PlayerMovementScr : MonoBehaviour
         isDashing = false;  
         JumpCounter = 0;
         Dir = 1;
+        
+        if(allData.LastCheckPointPos == new Vector2(0,0))
+            transform.position = new Vector2(-34.7f,-4.6f);
+        else
+            transform.position = new Vector2(allData.LastCheckPointPos.x + 2, allData.LastCheckPointPos.y);
     }
     
     void Update() 
@@ -181,11 +186,10 @@ public class PlayerMovementScr : MonoBehaviour
             PlayerRb.gravityScale = 3;
         }  
     }
-    
     IEnumerator StopPush(Rigidbody2D EnemyRb)
     {
         yield return new WaitForSeconds(1);
         if(EnemyRb != null)
             EnemyRb.velocity = new Vector2(0f, 0f);
-    }  
+    } 
 }

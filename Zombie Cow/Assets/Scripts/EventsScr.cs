@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EventsScr : MonoBehaviour
 {
@@ -14,20 +15,24 @@ public class EventsScr : MonoBehaviour
     public EnemyBoss1Scr enemyBoss1Scr;
     public GameObject BossHp;
     public GameObject TileBlock;
-    public Animator PlayerAnimator, GameOverPlayerAnimator;
+    public Animator PlayerAnimator, GameOverPlayerAnimator, GameOverAnimator;
     public GameObject GameOverMenu;
     public static bool AllCanMove;
-    int CheckPointCount;
+    public AllData allData;
     bool RestartBool;
-    Vector2 LastCheckPointPos;
+    public GameObject[] Checkpoints;
     void Start()
     {
-        ChatCounter = 0;
+        ChatCounter = allData.LastChatCounter;
+        if(allData.LastCheckPointObj != null)
+            allData.LastCheckPointObj.GetComponent<BoxCollider2D>().isTrigger = false;
+
         StartCoroutine(StartGame());
         playerMovementScr.CanMove = false;
         CamAnimator.SetTrigger("Entrance");
         AllCanMove = true;
         RestartBool = false;
+        
     }
 
     void Update()
@@ -45,13 +50,15 @@ public class EventsScr : MonoBehaviour
     IEnumerator StartGame()
     {
         yield return new WaitForSeconds(3);
-        NextChat();
+        if(ChatCounter == 0)
+            NextChat();
+        else
+            playerMovementScr.CanMove = true;
     }
     
     public void NextChat()
     {
         ChatBubles[ChatCounter].SetActive(true);
-        
     }
     public void CloseChat()
     {
@@ -79,12 +86,13 @@ public class EventsScr : MonoBehaviour
     public void AfterBoss()
     {
         StartCoroutine(AfterbossWait());
+        IEnumerator AfterbossWait()
+        {
+            yield return new WaitForSeconds(15);
+            TileBlock.SetActive(false);
+        }
     }
-    IEnumerator AfterbossWait()
-    {
-        yield return new WaitForSeconds(15);
-        TileBlock.SetActive(false);
-    }
+    
     public void ThrowCredits()
     {
         PlayerAnimator.SetTrigger("HeadBang");
@@ -94,27 +102,15 @@ public class EventsScr : MonoBehaviour
         if(!RestartBool)
         {
             RestartBool = true;
-            GameOverPlayerAnimator.SetTrigger("Head");
+            GameOverPlayerAnimator.SetTrigger("Restart");
+            GameOverAnimator.SetTrigger("Restart");
             
             StartCoroutine(WaitForGameOver());
             IEnumerator WaitForGameOver()
             {
                 yield return new WaitForSeconds(2f);
-                GameOverMenu.SetActive(false);
-                RestartBool = false;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
     }
-    void Checkpoint()
-    {
-
-    }
-    
-    public void CheckpointColliders(Vector2 CheckPointPos)
-    {
-        LastCheckPointPos = CheckPointPos;
-        CheckPointCount++;
-    }  
-    
-
 }

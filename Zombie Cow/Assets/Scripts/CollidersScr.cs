@@ -18,11 +18,12 @@ public class CollidersScr : MonoBehaviour
         {
             eventsScr.NextChat();
             eventsScr.CanMoveFunc();
-            Destroy(gameObject, 3);    
+            Destroy(gameObject,3);   
+            gameObject.GetComponent<BoxCollider2D>().enabled = false; 
             StartCoroutine(GravityFix());  
         }      
     }
-    IEnumerator GravityFix()
+    public IEnumerator GravityFix()
     {   
         PlayerRb.gravityScale = 40;
         if(playerMovementScr.isDashing)
@@ -34,4 +35,5 @@ public class CollidersScr : MonoBehaviour
         yield return new WaitUntil(playerMovementScr.isGrounded);
         PlayerRb.gravityScale = 3;
     }
+    
 }
