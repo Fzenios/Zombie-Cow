@@ -56,7 +56,7 @@ public class EnemyRangeMovement : MonoBehaviour
                 Distance = PlayerPos.position.x - transform.position.x;
                 if(Distance < 0)
                 {
-                    transform.localScale = transform.localScale;
+                    transform.localScale = new Vector3(-4,4,0);
                     Dir = 1;
                 } 
                 else if(Distance > 0)

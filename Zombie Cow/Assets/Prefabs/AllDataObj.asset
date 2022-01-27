@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eeebce4cac09b4740bde8e05a94c52bb, type: 3}
   m_Name: AllDataObj
   m_EditorClassIdentifier: 
-  LastCheckPointPos: {x: 135.19826, y: -5.007474}
-  LastChatCounter: 32
-  LastCheckPointObj: {fileID: 0}
+  LastCheckPointPos: {x: -109.46175, y: 7.452526}
+  LastChatCounter: 33
+  CheckPointCounter: 5
+  CrowdCounter: 30

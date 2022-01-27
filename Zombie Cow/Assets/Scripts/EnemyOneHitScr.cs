@@ -1,24 +1,84 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyOneHitScr : MonoBehaviour
 {
-    EnemyMeleeHealthScr enemyMeleeHealthScr;
+    public float MaxHp, CurrentHp;
+    public float EnemyTouchDmg;
+    public Slider HealthSlider;
+    float Distance;
+    Transform PlayerPos;
+    int Dir;
+    Animator animator;
+    BoxCollider2D Collider;
+    CircleCollider2D Collider2;
+    Rigidbody2D EnemyRb;
+    PlayerHealthScr playerHealthScr;
+    EventsScr eventsScr;   
     void Start()
     {
-        enemyMeleeHealthScr = GetComponent<EnemyMeleeHealthScr>();
+        CurrentHp = MaxHp;
+        HealthSlider.maxValue = MaxHp;
+        PlayerPos = GameObject.FindGameObjectWithTag("Player").transform;
+        playerHealthScr = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealthScr>();
+        Collider = GetComponent<BoxCollider2D>();
+        Collider2 = GetComponent<CircleCollider2D>();
+        EnemyRb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        eventsScr = GameObject.FindGameObjectWithTag("PublicScripts").GetComponent<EventsScr>();
     }
     void Update()
     {
-        
+        HealthSlider.value = CurrentHp;      
+    }
+     
+    public void TakeDmg(float Damage, string TypeDmg)
+    {
+        if(TypeDmg == "Range")
+        {
+            return;
+        }
+        else if(TypeDmg == "Melee")
+        {
+            CurrentHp -= 100000;
+
+            if(CurrentHp <= 0)
+            { 
+                animator.SetTrigger("DeathMetal");
+                Dying();
+                eventsScr.CrowdCounter++;
+                playerHealthScr.GainHP(playerHealthScr.HpMax);
+            }
+        }    
+    }
+
+    void Dying()
+    {
+        EnemyRb.velocity = new Vector2(0f, 0f);
+        Collider.enabled = false;
+        Collider2.enabled = false;
+        EnemyRb.gravityScale = 0;
     }
     void OnCollisionEnter2D(Collision2D other) 
     {
         if(other.transform.tag == "Player")
         {
-            if(other.gameObject.GetComponent<PlayerMovementScr>().isDashing)
-                enemyMeleeHealthScr.TakeDmg(100000, "Melee");            
+            Distance = PlayerPos.position.x - transform.position.x;
+            if(Distance < 0)
+                Dir = 1;
+            else if(Distance > 0)
+                Dir = -1;
+            playerHealthScr.TakeDmg(EnemyTouchDmg, Dir);
         }        
+    }   
+        
+    void OnCollisionStay2D(Collision2D other) 
+    {
+        if(other.transform.tag == "Player")
+        {
+            playerHealthScr.TakeDmg(EnemyTouchDmg, Dir);
+        }
     }
 }

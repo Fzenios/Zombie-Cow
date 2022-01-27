@@ -7,12 +7,12 @@ public class AllData : ScriptableObject
 {
     public Vector2 LastCheckPointPos;
     public int LastChatCounter;
-    public GameObject LastCheckPointObj;
+    public int CheckPointCounter;
+    public int CrowdCounter;
 
-    public void CheckpointColliders(Vector2 CheckPointPos, GameObject CheckPointObj, int ChatCounter)
+    public void CheckpointColliders(Vector2 CheckPointPos, int ChatCounter)
     {
         LastCheckPointPos = CheckPointPos;
-        LastCheckPointObj = CheckPointObj;
         LastChatCounter = ChatCounter;
     }  
 }

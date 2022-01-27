@@ -18,7 +18,7 @@ public class EnemyRangeHealthScr : MonoBehaviour
     public EnemyShootScr enemyShootScr;
     bool Invincible;
     PlayerHealthScr playerHealthScr;
-    CreditsScr creditsScr;
+    EventsScr eventsScr;   
     
     void Start()
     {
@@ -30,7 +30,7 @@ public class EnemyRangeHealthScr : MonoBehaviour
         EnemyRb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         enemyRangeMovement = GetComponent<EnemyRangeMovement>();
-        creditsScr = GameObject.FindGameObjectWithTag("PublicScripts").GetComponent<CreditsScr>();
+        eventsScr = GameObject.FindGameObjectWithTag("PublicScripts").GetComponent<EventsScr>();
         Invincible = false;
     }
 
@@ -54,7 +54,6 @@ public class EnemyRangeHealthScr : MonoBehaviour
                 Destroy(gameObject, 5);
                 Dying();
                 playerHealthScr.GainHP(1);
-                return;
             }
         }
         if(TypeDmg == "Melee")
@@ -68,9 +67,8 @@ public class EnemyRangeHealthScr : MonoBehaviour
             { 
                 animator.SetTrigger("DeathMetal");
                 Dying();
-                creditsScr.SpownCrowd();
+                eventsScr.CrowdCounter++;
                 playerHealthScr.GainHP(playerHealthScr.HpMax);
-                return;
             }
         }    
     }

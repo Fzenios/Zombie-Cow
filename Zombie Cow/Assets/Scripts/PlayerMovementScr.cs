@@ -30,12 +30,7 @@ public class PlayerMovementScr : MonoBehaviour
         PlayerBox = GetComponent<BoxCollider2D>();      
         isDashing = false;  
         JumpCounter = 0;
-        Dir = 1;
-        
-        if(allData.LastCheckPointPos == new Vector2(0,0))
-            transform.position = new Vector2(-34.7f,-4.6f);
-        else
-            transform.position = new Vector2(allData.LastCheckPointPos.x + 2, allData.LastCheckPointPos.y);
+        Dir = 1;        
     }
     
     void Update() 
@@ -162,9 +157,11 @@ public class PlayerMovementScr : MonoBehaviour
         {
             if(other.transform.GetComponent<EnemyRangeHealthScr>() != null)
                 other.transform.GetComponent<EnemyRangeHealthScr>().TakeDmg(DashDmg, "Melee");
-            else
-                other.transform.GetComponent<EnemyMeleeHealthScr>().TakeDmg(DashDmg,"Melee");  
-
+            else if (other.transform.GetComponent<EnemyMeleeHealthScr>() != null)
+                other.transform.GetComponent<EnemyMeleeHealthScr>().TakeDmg(DashDmg, "Melee"); 
+            else 
+                other.transform.GetComponent<EnemyOneHitScr>().TakeDmg(DashDmg, "Melee");             
+                
             Rigidbody2D EnemyRb = other.transform.GetComponent<Rigidbody2D>(); 
             StartCoroutine(StopPush(EnemyRb));
 

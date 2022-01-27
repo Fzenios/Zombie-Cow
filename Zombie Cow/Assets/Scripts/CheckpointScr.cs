@@ -10,8 +10,9 @@ public class CheckpointScr : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            allData.CheckpointColliders(transform.position, gameObject, eventsScr.ChatCounter);
-            gameObject.SetActive(false);
+            allData.CheckpointColliders(transform.position, eventsScr.ChatCounter);
+            allData.CheckPointCounter++;
+            gameObject.SetActive(false);       
         }        
     }
 }

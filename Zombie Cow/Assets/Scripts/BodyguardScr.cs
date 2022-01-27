@@ -7,6 +7,12 @@ public class BodyguardScr : MonoBehaviour
     public EventsScr eventsScr;
     public Collider2D DoorCollider;
     public Collider2D GuardCollider;
+    public Transform PlayerPos;
+    SpriteRenderer spriteRenderer;
+    void Start() 
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();        
+    } 
     /*void OnCollisionEnter2D(Collision2D other) 
     {
         if(other.collider.tag == "Milk")
@@ -16,6 +22,17 @@ public class BodyguardScr : MonoBehaviour
             DoorCollider.isTrigger = true;
         }
     }*/
+    void Update() 
+    {
+        float Distance = transform.position.x - PlayerPos.position.x;
+        if(Distance < 20)
+        {
+            if(Distance < 0 )
+                spriteRenderer.flipX = false;
+            else 
+                spriteRenderer.flipX = true;
+        }      
+    }
     void OnTriggerEnter2D(Collider2D other) 
     {
         if(other.tag == "Milk")
