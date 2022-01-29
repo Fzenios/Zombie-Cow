@@ -12,6 +12,7 @@ public class CheckpointScr : MonoBehaviour
         {
             allData.CheckpointColliders(transform.position, eventsScr.ChatCounter);
             allData.CheckPointCounter++;
+            eventsScr.CheckpointPassed();
             gameObject.SetActive(false);       
         }        
     }

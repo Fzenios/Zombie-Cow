@@ -8,6 +8,7 @@ public class PlayerHealthScr : MonoBehaviour
 {
     public float HpMax, HpCurrent;
     public float DashDmg;
+    public int InvincibleTime; 
     [HideInInspector] public bool Invincible;
     PlayerMovementScr playerMovementScr;
     Rigidbody2D PlayerRb;
@@ -40,35 +41,32 @@ public class PlayerHealthScr : MonoBehaviour
         {
             Invincible = true;
 
-            HpCurrent -= Damage;
-            if(HpCurrent < 0)
+            //HpCurrent -= Damage;
+            if(HpCurrent <= 0)
+            {
                 HpCurrent = 0;
-
+                StartCoroutine(CheckDeath());
+            }
+            
             for (int i = (int)HpCurrent; i < HpMax; i++)
             {
                 Hearts[i].SetActive(false);
             }
 
-            if(HpCurrent <= 0)
-                StartCoroutine(CheckDeath());
-                
-
             CameraAnimator.SetTrigger("CamTrig");
-
+            PlayerAnimator.SetTrigger("Damage");
             if(Dir == 1)
                 PlayerRb.AddForce(ForceBack, ForceMode2D.Impulse);
-            else 
-                PlayerRb.AddForce(-ForceBack, ForceMode2D.Impulse);
+            else if(Dir == -1)
+                PlayerRb.AddForce(-ForceBack, ForceMode2D.Impulse);        
             
             StartCoroutine(EnemyPushed());
-            PlayerAnimator.SetTrigger("Damage");
-
             StartCoroutine(InvincibleStat());
         }
     }
     IEnumerator CheckDeath()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.15f);
         if(HpCurrent <= 0)
             {
                 EventsScr.AllCanMove = false;
@@ -80,26 +78,13 @@ public class PlayerHealthScr : MonoBehaviour
     }
     IEnumerator InvincibleStat()
     {
-        PlayerSprite.color = new Color32(255,255,255,140);   
-        yield return new WaitForSeconds(0.2f);
-        PlayerSprite.color = new Color32(255,255,255,255);   
-        yield return new WaitForSeconds(0.2f);
-        PlayerSprite.color = new Color32(255,255,255,140);   
-        yield return new WaitForSeconds(0.2f);
-        PlayerSprite.color = new Color32(255,255,255,255);   
-        yield return new WaitForSeconds(0.2f);
-        PlayerSprite.color = new Color32(255,255,255,140);   
-        yield return new WaitForSeconds(0.2f);
-        PlayerSprite.color = new Color32(255,255,255,255); 
-        yield return new WaitForSeconds(0.2f);
-        PlayerSprite.color = new Color32(255,255,255,140);   
-        yield return new WaitForSeconds(0.2f);
-        PlayerSprite.color = new Color32(255,255,255,255); 
-        yield return new WaitForSeconds(0.2f);
-        PlayerSprite.color = new Color32(255,255,255,140);   
-        yield return new WaitForSeconds(0.2f);
-        PlayerSprite.color = new Color32(255,255,255,255); 
-        yield return new WaitForSeconds(0.2f);        
+        for (int i = 0; i < InvincibleTime; i++)
+        {  
+            yield return new WaitForSeconds(0.2f);
+            PlayerSprite.color = new Color32(255,255,255,140);   
+            yield return new WaitForSeconds(0.2f);
+            PlayerSprite.color = new Color32(255,255,255,255);
+        }
         Invincible = false;
     }
     IEnumerator EnemyPushed()
@@ -123,7 +108,7 @@ public class PlayerHealthScr : MonoBehaviour
     {
         if(other.collider.tag == "Trap")
         {
-            Destroy(gameObject);                             
+            TakeDmg(4, 0);                         
         }
     }
 }

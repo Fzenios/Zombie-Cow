@@ -6,9 +6,10 @@ using UnityEngine.SceneManagement;
 public class EventsScr : MonoBehaviour
 {
     public Transform PlayerPos;
-    public GameObject[] ChatBubles;
-    public int ChatCounter, CrowdCounter;
+    public GameObject[] ChatBubbles, BubblesColliders;
+    public int ChatCounter, CrowdCounter, CollidersCount;
     public PlayerMovementScr playerMovementScr;
+    public ShootScr shootScr;
     public GameObject Level1, Level2, Grid1, Grid2;
     public Animator CamAnimator;
     public EnemyBoss1Scr enemyBoss1Scr;
@@ -19,18 +20,28 @@ public class EventsScr : MonoBehaviour
     public AllData allData;
     bool RestartBool;
     public GameObject[] Checkpoints;
+    public SpriteRenderer[] Clouds;
     CreditsScr creditsScr;
+    
     void Start()
     {
         ChatCounter = allData.LastChatCounter;
-
+        CollidersCount = 0;
+        CrowdCounter = 0;
         StartCoroutine(StartGame());
-        playerMovementScr.CanMove = false;
+        playerMovementScr.CanMove = true;
         CamAnimator.SetTrigger("Entrance");
         AllCanMove = true;
         RestartBool = false;
-        creditsScr = GetComponent<CreditsScr>();
-        
+        creditsScr = GetComponent<CreditsScr>();  
+        shootScr.CanShoot = true;
+        if(Level1.activeSelf)
+        {
+            for (int i = 0; i < Clouds.Length; i++)
+            {
+                Clouds[i].sortingOrder = Random.Range(0,1000);
+            }
+        }
     }
     
     IEnumerator StartGame()
@@ -38,7 +49,7 @@ public class EventsScr : MonoBehaviour
         if(allData.CheckPointCounter == 0)
             PlayerPos.position = new Vector2(-34.7f,-4.6f);
         else
-            PlayerPos.position = new Vector2(allData.LastCheckPointPos.x + 2, allData.LastCheckPointPos.y);
+            PlayerPos.position = new Vector2(allData.LastCheckPointPos.x, allData.LastCheckPointPos.y);
         
         if(allData.CheckPointCounter < 5)
         {
@@ -55,35 +66,42 @@ public class EventsScr : MonoBehaviour
             Grid2.SetActive(true);
         }
         
-        if(allData.CheckPointCounter > 1)
-        {
-            Checkpoints[allData.CheckPointCounter-1].GetComponent<BoxCollider2D>().isTrigger = false;
-        }
+        for (int i = 0; i < allData.CheckPointCounter; i++)
+            Checkpoints[i].SetActive(false);
+
+        for (int i = 0; i < allData.CollidersCount; i++)
+            BubblesColliders[i].SetActive(false);
+
+
+        if(ChatCounter == 0)
+            playerMovementScr.CanMove = false;
+        else
+            playerMovementScr.CanMove = true;
+        
 
         yield return new WaitForSeconds(3);
 
         if(ChatCounter == 0)
-        {
             NextChat();
-        }
-        else
-        {
-            playerMovementScr.CanMove = true;
-        }
     }
     
     public void NextChat()
     {
-        ChatBubles[ChatCounter].SetActive(true);
+        ChatBubbles[ChatCounter].SetActive(true);
     }
     public void CloseChat()
     {
-        ChatBubles[ChatCounter].SetActive(false);
+        ChatBubbles[ChatCounter].SetActive(false);
         ChatCounter++;
+
     }
     public void CanMoveFunc()
     {
         playerMovementScr.CanMove =! playerMovementScr.CanMove;
+    }
+    public void CanShootFunc()
+    {
+        shootScr.CanShoot =! shootScr.CanShoot;
     }
     public void ChangeMap()
     {
@@ -98,10 +116,10 @@ public class EventsScr : MonoBehaviour
     {
         enemyBoss1Scr.LoadHp = true;
         BossHp.SetActive(true);
+        enemyBoss1Scr.InvincibleChange();
     }
     public void AfterBoss()
     {
-        allData.CrowdCounter += CrowdCounter;
         for (int i = 0; i < allData.CrowdCounter; i++)
         {
             creditsScr.SpownCrowd();
@@ -111,9 +129,9 @@ public class EventsScr : MonoBehaviour
         {
             yield return new WaitForSeconds(15);
             TileBlock.SetActive(false);
+            //Shake camera
         }
     }
-    
     public void ThrowCredits()
     {
         PlayerAnimator.SetTrigger("HeadBang");
@@ -122,7 +140,7 @@ public class EventsScr : MonoBehaviour
     {
         if(!RestartBool)
         {
-            allData.CrowdCounter += CrowdCounter;
+            
             RestartBool = true;
             GameOverPlayerAnimator.SetTrigger("Restart");
             GameOverAnimator.SetTrigger("Restart");
@@ -134,5 +152,12 @@ public class EventsScr : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
+    }
+    public void CheckpointPassed()
+    {
+        allData.CollidersCount += CollidersCount;
+        CollidersCount = 0;
+        allData.CrowdCounter += CrowdCounter;
+        CrowdCounter = 0;
     }
 }

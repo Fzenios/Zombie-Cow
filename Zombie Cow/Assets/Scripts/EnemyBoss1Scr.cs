@@ -59,7 +59,7 @@ public class EnemyBoss1Scr : MonoBehaviour
         IsJumping = false;
         IsCharging = false;   
         CanMove = true;  
-        Invincible = false;
+        Invincible = true;
         LoadHp = false;
     }
 
@@ -336,5 +336,9 @@ public class EnemyBoss1Scr : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         EnemyRb.velocity = new Vector2(0,0);
-    }    
+    }   
+    public void InvincibleChange()
+    {
+        Invincible =! Invincible;
+    } 
 }

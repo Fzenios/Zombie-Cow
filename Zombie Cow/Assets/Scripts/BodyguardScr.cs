@@ -13,15 +13,7 @@ public class BodyguardScr : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();        
     } 
-    /*void OnCollisionEnter2D(Collision2D other) 
-    {
-        if(other.collider.tag == "Milk")
-        {
-            eventsScr.CanMoveFunc();
-            eventsScr.NextChat();
-            DoorCollider.isTrigger = true;
-        }
-    }*/
+
     void Update() 
     {
         float Distance = transform.position.x - PlayerPos.position.x;
@@ -35,7 +27,7 @@ public class BodyguardScr : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D other) 
     {
-        if(other.tag == "Milk")
+        if(other.tag == "Milk" && eventsScr.ChatCounter > 5)
         {
             eventsScr.CanMoveFunc();
             eventsScr.NextChat();

@@ -6,15 +6,6 @@ public class CreditsScr : MonoBehaviour
 {
     public GameObject[] CrowdLast;
     public Transform CrowdList;
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
     
     public void SpownCrowd()
     {

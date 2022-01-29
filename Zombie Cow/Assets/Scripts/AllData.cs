@@ -9,6 +9,7 @@ public class AllData : ScriptableObject
     public int LastChatCounter;
     public int CheckPointCounter;
     public int CrowdCounter;
+    public int CollidersCount;
 
     public void CheckpointColliders(Vector2 CheckPointPos, int ChatCounter)
     {

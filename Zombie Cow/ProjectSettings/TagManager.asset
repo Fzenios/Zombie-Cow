@@ -12,6 +12,7 @@ TagManager:
   - BossTrig
   - Guard
   - PublicScripts
+  - Colliders
   layers:
   - Default
   - TransparentFX

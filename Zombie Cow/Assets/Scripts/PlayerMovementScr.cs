@@ -13,6 +13,7 @@ public class PlayerMovementScr : MonoBehaviour
     [SerializeField] LayerMask groundLayer, EnemyLayer;
     public KeyCode DashKey;
     public Vector2 DashSpeed;
+    bool CanDash;
     [HideInInspector] public bool isDashing;
     Coroutine Dashmove;
     float Movement;
@@ -92,6 +93,7 @@ public class PlayerMovementScr : MonoBehaviour
         {
             JumpResetCur = 0;
             JumpCounter = 0;
+            CanDash = true;
         }          
         
         if(isGrounded() || isGroundedEnemy() || isDashing)
@@ -137,19 +139,24 @@ public class PlayerMovementScr : MonoBehaviour
     
     IEnumerator DashMove(float Dir)
     {
-        isDashing = true;
-        PlayerRb.velocity = new Vector2(0f, 0f);
-        if(Dir == 1)
-            PlayerRb.AddForce(DashSpeed, ForceMode2D.Impulse);
-        else 
-            PlayerRb.AddForce(-DashSpeed, ForceMode2D.Impulse);
-        PlayerRb.gravityScale = 0;
-        animator.SetBool("Charge", true);
-        yield return new WaitForSeconds(0.5f);
-        PlayerRb.gravityScale = 3;
-        yield return new WaitForSeconds(0.5f);
-        animator.SetBool("Charge", false);
-        isDashing = false;
+        if(CanDash)
+        {
+            CanDash = false;
+            isDashing = true;
+            PlayerRb.velocity = new Vector2(0f, 0f);
+            if(Dir == 1)
+                PlayerRb.AddForce(DashSpeed, ForceMode2D.Impulse);
+            else 
+                PlayerRb.AddForce(-DashSpeed, ForceMode2D.Impulse);
+            PlayerRb.gravityScale = 0;
+            animator.SetBool("Charge", true);
+            yield return new WaitForSeconds(0.5f);
+            CanDash = false;
+            PlayerRb.gravityScale = 3;
+            //yield return new WaitForSeconds(0.5f);
+            animator.SetBool("Charge", false);
+            isDashing = false;
+        }
     }
     void OnCollisionEnter2D(Collision2D other) 
     {

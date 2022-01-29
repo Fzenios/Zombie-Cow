@@ -16,9 +16,10 @@ public class CollidersScr : MonoBehaviour
     {
         if(other.tag == "Player")
         {
+            eventsScr.CollidersCount++;
             eventsScr.NextChat();
             eventsScr.CanMoveFunc();
-            Destroy(gameObject,3);   
+            Destroy(gameObject,1.5f);   
             gameObject.GetComponent<BoxCollider2D>().enabled = false; 
             StartCoroutine(GravityFix());  
         }      
