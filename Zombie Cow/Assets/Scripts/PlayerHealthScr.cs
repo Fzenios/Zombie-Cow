@@ -41,7 +41,7 @@ public class PlayerHealthScr : MonoBehaviour
         {
             Invincible = true;
 
-            //HpCurrent -= Damage;
+            HpCurrent -= Damage;
             if(HpCurrent <= 0)
             {
                 HpCurrent = 0;
@@ -108,7 +108,7 @@ public class PlayerHealthScr : MonoBehaviour
     {
         if(other.collider.tag == "Trap")
         {
-            TakeDmg(4, 0);                         
+            TakeDmg(HpMax, 0);                         
         }
     }
 }

@@ -20,7 +20,7 @@ public class EnemyOneHitScr : MonoBehaviour
     void Start()
     {
         CurrentHp = MaxHp;
-        HealthSlider.maxValue = MaxHp;
+        HealthSlider.maxValue = 10;
         PlayerPos = GameObject.FindGameObjectWithTag("Player").transform;
         playerHealthScr = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealthScr>();
         Collider = GetComponent<BoxCollider2D>();
@@ -42,7 +42,7 @@ public class EnemyOneHitScr : MonoBehaviour
         }
         else if(TypeDmg == "Melee")
         {
-            CurrentHp -= 100000;
+            CurrentHp -= 5;
 
             if(CurrentHp <= 0)
             { 

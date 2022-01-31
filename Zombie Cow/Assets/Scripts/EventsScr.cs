@@ -29,7 +29,6 @@ public class EventsScr : MonoBehaviour
         CollidersCount = 0;
         CrowdCounter = 0;
         StartCoroutine(StartGame());
-        playerMovementScr.CanMove = true;
         CamAnimator.SetTrigger("Entrance");
         AllCanMove = true;
         RestartBool = false;
@@ -127,9 +126,11 @@ public class EventsScr : MonoBehaviour
         StartCoroutine(AfterbossWait());
         IEnumerator AfterbossWait()
         {
-            yield return new WaitForSeconds(15);
+            yield return new WaitForSeconds(3);
+            CamAnimator.SetBool("ShakeLoop", true);
+            yield return new WaitForSeconds(3);
+            CamAnimator.SetBool("ShakeLoop", false);
             TileBlock.SetActive(false);
-            //Shake camera
         }
     }
     public void ThrowCredits()

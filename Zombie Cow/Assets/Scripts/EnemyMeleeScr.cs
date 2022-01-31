@@ -16,6 +16,7 @@ public class EnemyMeleeScr : MonoBehaviour
     public float ChargeDmg, PunchDmg;
     int Dir;
     Animator animator;
+    EnemyMeleeHealthScr enemyMeleeHealthScr;
     void Start()
     {
         IsCharging = false;
@@ -24,6 +25,7 @@ public class EnemyMeleeScr : MonoBehaviour
         PlayerPos = GameObject.FindGameObjectWithTag("Player").transform;
         EnemyRb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        enemyMeleeHealthScr = GetComponent<EnemyMeleeHealthScr>();
         Dir = 1;
     }
     void Update()
@@ -32,19 +34,14 @@ public class EnemyMeleeScr : MonoBehaviour
         {
             Debug.DrawLine(transform.position, new Vector3(transform.position.x + drawline, transform.position.y, transform.position.z), Color.cyan);
             DistanceWithPlayer = Vector2.Distance(transform.position,PlayerPos.position);
+            
             if(DistanceWithPlayer < DistanceToActivate)
-            {
                 FightStart = true;
-            }
             else
-            {
                 FightStart = false;
-                EnemyRb.velocity = new Vector2(0f, 0f);
-                animator.SetBool("Walk", false);
-            }
-            if(FightStart)
+
+            if(FightStart || enemyMeleeHealthScr.TookDamage)
             {
-                
                 if(Vector2.Distance(transform.position,PlayerPos.position) > EnemySafeDistance )
                     transform.position = Vector2.MoveTowards(transform.position, PlayerPos.position, Time.deltaTime * EnemySpeed);
                 else if (Vector2.Distance(transform.position,PlayerPos.position) < EnemyUnSafeDistance )
@@ -85,6 +82,11 @@ public class EnemyMeleeScr : MonoBehaviour
                     Dir = -1;   
                 }
             } 
+            else 
+            {
+                EnemyRb.velocity = new Vector2(0f, 0f);
+                animator.SetBool("Walk", false);
+            }
         }       
     }
     IEnumerator Charge()
@@ -94,7 +96,7 @@ public class EnemyMeleeScr : MonoBehaviour
             EnemyRb.AddForce(-DashSpeed, ForceMode2D.Impulse);
         else if(Distance > 0)
             EnemyRb.AddForce(DashSpeed, ForceMode2D.Impulse);
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.8f);
         EnemyRb.velocity = new Vector2(0f, 0f);
         IsCharging = false;
         yield return new WaitForSeconds(5);

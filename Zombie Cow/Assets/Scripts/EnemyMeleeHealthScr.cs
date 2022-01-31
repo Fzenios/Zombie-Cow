@@ -19,6 +19,7 @@ public class EnemyMeleeHealthScr : MonoBehaviour
     bool Invincible;
     PlayerHealthScr playerHealthScr;
     EventsScr eventsScr;   
+    [HideInInspector] public bool TookDamage;
     void Start()
     {
         CurrentHp = MaxHp;
@@ -32,6 +33,7 @@ public class EnemyMeleeHealthScr : MonoBehaviour
         enemyMeleeScr = GetComponent<EnemyMeleeScr>();
         eventsScr = GameObject.FindGameObjectWithTag("PublicScripts").GetComponent<EventsScr>();
         Invincible = false;
+        TookDamage = false;
     }
 
     void Update()
@@ -87,9 +89,12 @@ public class EnemyMeleeHealthScr : MonoBehaviour
     
     IEnumerator GotHit()
     {
+        TookDamage = true;
         Invincible = true;
         yield return new WaitForSeconds(0.2f);
         Invincible = false;
+        yield return new WaitForSeconds(4);
+        TookDamage = false;
     }
     
     void OnCollisionEnter2D(Collision2D other) 

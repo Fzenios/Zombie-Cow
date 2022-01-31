@@ -50,6 +50,9 @@ TagManager:
   - name: Background
     uniqueID: 425131889
     locked: 0
+  - name: Level
+    uniqueID: 891634745
+    locked: 0
   - name: Crowd
     uniqueID: 560633949
     locked: 0

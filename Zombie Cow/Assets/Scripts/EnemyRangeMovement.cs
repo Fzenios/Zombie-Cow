@@ -15,9 +15,11 @@ public class EnemyRangeMovement : MonoBehaviour
     public float drawline;
     [HideInInspector] public int Dir;
     Animator animator;
+    EnemyRangeHealthScr enemyRangeHealthScr;
     void Start()
     {
         EnemyRb = GetComponent<Rigidbody2D>();
+        enemyRangeHealthScr = GetComponent<EnemyRangeHealthScr>();
         PlayerPos = GameObject.FindGameObjectWithTag("Player").transform;
         FightStart = false;
         animator = GetComponent<Animator>();
@@ -33,12 +35,9 @@ public class EnemyRangeMovement : MonoBehaviour
             if(DistanceWithPlayer < DistanceToActivate)
                 FightStart = true;
             else 
-            {
                 FightStart = false;
-                EnemyRb.velocity = new Vector2(0f, 0f);
-            }
         
-            if(FightStart)
+            if(FightStart || enemyRangeHealthScr.TookDamage)
             {
                 if(Vector2.Distance(transform.position,PlayerPos.position) > EnemySafeDistance )
                 {
@@ -49,10 +48,10 @@ public class EnemyRangeMovement : MonoBehaviour
                 {
                     animator.SetBool("Walk", true);
                     transform.position = Vector2.MoveTowards(transform.position, PlayerPos.position, -Time.deltaTime * EnemySpeed);
-                }
+                }   
                 else 
                     animator.SetBool("Walk", false);
-                
+                                 
                 Distance = PlayerPos.position.x - transform.position.x;
                 if(Distance < 0)
                 {
@@ -64,6 +63,12 @@ public class EnemyRangeMovement : MonoBehaviour
                     transform.localScale = new Vector3(4,4,0);
                     Dir = -1;
                 } 
+                
+            }
+            else 
+            {
+                animator.SetBool("Walk", false);
+                EnemyRb.velocity = new Vector2(0f, 0f);
             }
         }
     }

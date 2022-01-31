@@ -15,5 +15,5 @@ MonoBehaviour:
   LastCheckPointPos: {x: 52.39826, y: -46.027473}
   LastChatCounter: 33
   CheckPointCounter: 9
-  CrowdCounter: 5
-  CollidersCount: 0
+  CrowdCounter: 26
+  CollidersCount: 8

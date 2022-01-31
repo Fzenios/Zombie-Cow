@@ -77,13 +77,15 @@ public class EnemyBoss1Scr : MonoBehaviour
                 FightStart = true;
                 playerMovementScr.CanMove = true;
             }   
-        }    
+        }   
+        
+        HealthSlider.value = CurrentHp; 
 
         if(EventsScr.AllCanMove)
         { 
             if(FightStart)
             {
-                HealthSlider.value = CurrentHp;
+                
                 if(!Attacking)
                 {
                     RandomAttack = Random.Range(1,4);

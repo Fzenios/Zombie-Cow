@@ -10,7 +10,7 @@ public class EnemyShootScr : MonoBehaviour
     public Transform ShootPos;
     public GameObject EnemyBullet;
     Transform Player;
-    public float Distance;
+    float Distance;
     public float EnemyDamage;
     public EnemyRangeMovement enemyRangeMovement;
     public Animator animator;
