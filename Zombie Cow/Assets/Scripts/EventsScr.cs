@@ -22,9 +22,10 @@ public class EventsScr : MonoBehaviour
     public GameObject[] Checkpoints;
     public SpriteRenderer[] Clouds;
     CreditsScr creditsScr;
+    MusicScr musicScr;
     
     void Start()
-    {
+    { 
         ChatCounter = allData.LastChatCounter;
         CollidersCount = 0;
         CrowdCounter = 0;
@@ -33,6 +34,7 @@ public class EventsScr : MonoBehaviour
         AllCanMove = true;
         RestartBool = false;
         creditsScr = GetComponent<CreditsScr>();  
+        musicScr = GetComponent<MusicScr>();
         shootScr.CanShoot = true;
         if(Level1.activeSelf)
         {
@@ -41,8 +43,7 @@ public class EventsScr : MonoBehaviour
                 Clouds[i].sortingOrder = Random.Range(0,1000);
             }
         }
-    }
-    
+    }    
     IEnumerator StartGame()
     {
         if(allData.CheckPointCounter == 0)
@@ -123,6 +124,7 @@ public class EventsScr : MonoBehaviour
         {
             creditsScr.SpownCrowd();
         }
+        BossHp.SetActive(false);
         StartCoroutine(AfterbossWait());
         IEnumerator AfterbossWait()
         {
@@ -131,6 +133,7 @@ public class EventsScr : MonoBehaviour
             yield return new WaitForSeconds(3);
             CamAnimator.SetBool("ShakeLoop", false);
             TileBlock.SetActive(false);
+            musicScr.YobSong("Play");
         }
     }
     public void ThrowCredits()
@@ -141,7 +144,6 @@ public class EventsScr : MonoBehaviour
     {
         if(!RestartBool)
         {
-            
             RestartBool = true;
             GameOverPlayerAnimator.SetTrigger("Restart");
             GameOverAnimator.SetTrigger("Restart");

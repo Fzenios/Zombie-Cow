@@ -44,9 +44,9 @@ public class EnemyBoss1Scr : MonoBehaviour
     
     void Start()
     {
-        CurrentHp = MaxHp;
+        //CurrentHp = MaxHp;
         HealthSlider.maxValue = MaxHp;
-        HealthSlider.value = 1;
+        HealthSlider.value = 0;
         FightStart = false;
         PlayerPos = GameObject.FindGameObjectWithTag("Player").transform;
         playerHealthScr = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealthScr>();
@@ -67,9 +67,9 @@ public class EnemyBoss1Scr : MonoBehaviour
     {
         if(LoadHp)
         {
-            if(HealthSlider.value < MaxHp)
+            if(CurrentHp < MaxHp)
             {
-                HealthSlider.value += Time.deltaTime * 300;
+                CurrentHp += Time.deltaTime * 300;
             }
             else
             {
