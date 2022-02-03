@@ -76,6 +76,22 @@ public class PlayerHealthScr : MonoBehaviour
                 PlayerRb.velocity = Vector2.zero;
             }
     }
+    public void GainHP(float Hp)
+    {
+        StartCoroutine(WaitforDamageCalc());
+        IEnumerator WaitforDamageCalc()
+        {
+                yield return new WaitForSeconds(0.1f);
+            HpCurrent += Hp;
+            if(HpCurrent > HpMax)
+                HpCurrent = HpMax;
+
+            for (int i = 0; i < (int)HpCurrent; i++)
+                {
+                    Hearts[i].SetActive(true);
+                }
+        }
+    }
     IEnumerator InvincibleStat()
     {
         for (int i = 0; i < InvincibleTime; i++)
@@ -92,17 +108,6 @@ public class PlayerHealthScr : MonoBehaviour
         playerMovementScr.EnemyPushed = true;
         yield return new WaitForSeconds(0.5f);
         playerMovementScr.EnemyPushed = false;
-    }
-    public void GainHP(float Hp)
-    {
-        HpCurrent += Hp;
-        if(HpCurrent > HpMax)
-            HpCurrent = HpMax;
-
-        for (int i = 0; i < (int)HpCurrent; i++)
-            {
-                Hearts[i].SetActive(true);
-            }
     }
     void OnCollisionEnter2D(Collision2D other) 
     {

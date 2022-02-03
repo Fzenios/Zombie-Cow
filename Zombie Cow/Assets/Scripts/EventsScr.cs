@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class EventsScr : MonoBehaviour
 {
-    public Transform PlayerPos;
+    public Transform PlayerPos, BandPos;
     public GameObject[] ChatBubbles, BubblesColliders;
     public int ChatCounter, CrowdCounter, CollidersCount;
     public PlayerMovementScr playerMovementScr;
@@ -19,10 +19,14 @@ public class EventsScr : MonoBehaviour
     public static bool AllCanMove;
     public AllData allData;
     bool RestartBool;
+    public GameObject Band, Credits, Hearts;
     public GameObject[] Checkpoints;
     public SpriteRenderer[] Clouds;
     CreditsScr creditsScr;
     MusicScr musicScr;
+    bool PlayLastSong;
+    float DistanceWithPlayer;
+    
     
     void Start()
     { 
@@ -36,6 +40,7 @@ public class EventsScr : MonoBehaviour
         creditsScr = GetComponent<CreditsScr>();  
         musicScr = GetComponent<MusicScr>();
         shootScr.CanShoot = true;
+        PlayLastSong = false;     
         if(Level1.activeSelf)
         {
             for (int i = 0; i < Clouds.Length; i++)
@@ -43,7 +48,16 @@ public class EventsScr : MonoBehaviour
                 Clouds[i].sortingOrder = Random.Range(0,1000);
             }
         }
-    }    
+    }   
+    void Update() 
+    {
+        if(PlayLastSong)
+        {
+            DistanceWithPlayer = Vector2.Distance(BandPos.position,PlayerPos.position);
+            float MusicVolume = (DistanceWithPlayer / 2) * -1;
+            musicScr.Mixer.SetFloat("YobVolume",MusicVolume); 
+        }           
+    } 
     IEnumerator StartGame()
     {
         if(allData.CheckPointCounter == 0)
@@ -120,6 +134,7 @@ public class EventsScr : MonoBehaviour
     }
     public void AfterBoss()
     {
+        Band.SetActive(true);
         for (int i = 0; i < allData.CrowdCounter; i++)
         {
             creditsScr.SpownCrowd();
@@ -134,11 +149,14 @@ public class EventsScr : MonoBehaviour
             CamAnimator.SetBool("ShakeLoop", false);
             TileBlock.SetActive(false);
             musicScr.YobSong("Play");
+            PlayLastSong = true;
         }
     }
     public void ThrowCredits()
     {
         PlayerAnimator.SetTrigger("HeadBang");
+        Credits.SetActive(true);
+        Hearts.SetActive(false);
     }
     public void RestartGame()
     {

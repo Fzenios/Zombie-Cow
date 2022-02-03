@@ -10,11 +10,19 @@ public class AllData : ScriptableObject
     public int CheckPointCounter;
     public int CrowdCounter;
     public int CollidersCount;
-    public bool Mute;
+    public float VolumeLock;
 
     public void CheckpointColliders(Vector2 CheckPointPos, int ChatCounter)
     {
         LastCheckPointPos = CheckPointPos;
         LastChatCounter = ChatCounter;
     }  
+    public void NewGame()
+    {
+        LastCheckPointPos = Vector2.zero;
+        LastChatCounter = 0;
+        CheckPointCounter = 0;
+        CrowdCounter = 0;
+        CollidersCount = 0;
+    }
 }

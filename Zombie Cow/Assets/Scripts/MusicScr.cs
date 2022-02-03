@@ -8,11 +8,10 @@ using UnityEngine.UI;
 public class MusicScr : MonoBehaviour
 {
     public Sound[] Sounds;
-    public AudioMixerGroup mixerGroup;
+    public AudioMixerGroup MasterGroup, YobGroup;
     public AudioMixer Mixer;
     public AllData allData;
-    public Transform PlayerPos, BandPos;
-    float DistanceWithPlayer;
+    public Slider VolumeSlider;
 
     void Awake() 
     {
@@ -21,15 +20,14 @@ public class MusicScr : MonoBehaviour
             s.source = gameObject.AddComponent<AudioSource>();
             s.source.loop = false;
             s.source.clip = s.Clip; 
-            s.source.outputAudioMixerGroup = mixerGroup; 
+            s.source.outputAudioMixerGroup = MasterGroup; 
         }
-    }
-    void Update() 
+    }   
+
+    void Start() 
     {
-        DistanceWithPlayer = Vector2.Distance(BandPos.position,PlayerPos.position);
-        float MusicVolume = (DistanceWithPlayer / 2) * -1;
-        Mixer.SetFloat("Volume",MusicVolume);        
-    }
+        VolumeSlider.value = allData.VolumeLock;
+    } 
 
     public void IntroSong()
     {
@@ -81,6 +79,7 @@ public class MusicScr : MonoBehaviour
     public void YobSong(string Play)
     {
         Sound s = Array.Find(Sounds, Sound => Sound.Name == "Yob");
+        s.source.outputAudioMixerGroup = YobGroup; 
         if(s != null)
         {
             if(Play == "Play")
@@ -100,12 +99,14 @@ public class MusicScr : MonoBehaviour
         if(s != null)
             s.source.PlayOneShot(s.source.clip);
     }
-    public void MuteBtn()
-    {  
-        allData.Mute =! allData.Mute;        
-        if(allData.Mute)
-            Mixer.SetFloat("Volume",-80);
-        else
-            Mixer.SetFloat("Volume",0);
+
+    public void SetVolume (float volume)
+    { 
+        Mixer.SetFloat("MasterVolume", volume);
+        if(volume <= -50)
+        {
+            Mixer.SetFloat("MasterVolume", -80);
+        }
     }
+     
 }

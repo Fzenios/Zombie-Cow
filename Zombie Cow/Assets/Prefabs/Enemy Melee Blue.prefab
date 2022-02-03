@@ -105,6 +105,7 @@ MonoBehaviour:
   CurrentHp: 0
   EnemyTouchDmg: 1
   HealthSlider: {fileID: 4743869712145695070}
+  TookDamage: 0
 --- !u!114 &6566694094733371275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,6 +215,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6566694094733371284}
     m_Modifications:
+    - target: {fileID: 320607735, guid: afd53a0ee172dd04f8649f269dd68992, type: 3}
+      propertyPath: m_Value
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 633486482, guid: afd53a0ee172dd04f8649f269dd68992, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 633486482, guid: afd53a0ee172dd04f8649f269dd68992, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 633486482, guid: afd53a0ee172dd04f8649f269dd68992, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0

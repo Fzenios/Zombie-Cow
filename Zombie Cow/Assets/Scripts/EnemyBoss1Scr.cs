@@ -288,8 +288,9 @@ public class EnemyBoss1Scr : MonoBehaviour
                 
                 playerHealthScr.TakeDmg(EnemyheavyDmg, Dir);               
             }
+            else
+                playerHealthScr.TakeDmg(EnemyTouchDmg, Dir);
 
-            playerHealthScr.TakeDmg(EnemyTouchDmg, Dir);
             StartCoroutine(StopSlide());
         }           
     }
