@@ -27,20 +27,12 @@ public class MusicScr : MonoBehaviour
     void Start() 
     {
         VolumeSlider.value = allData.VolumeLock;
+        Mixer.SetFloat("MasterVolume", VolumeSlider.value);
     } 
 
-    public void IntroSong()
+    public void GameSong(string Play)
     {
-        Sound s = Array.Find(Sounds, Sound => Sound.Name == "Intro");
-        if(s != null)
-        {
-            s.source.Play();
-            s.source.loop = true;
-        }    
-    }
-    public void MainGameSong(string Play)
-    {
-        Sound s = Array.Find(Sounds, Sound => Sound.Name == "Main");
+        Sound s = Array.Find(Sounds, Sound => Sound.Name == "Game");
         if(s != null)
         {
             if(Play == "Play")
@@ -55,24 +47,9 @@ public class MusicScr : MonoBehaviour
             }
         }
     }
-    public void CarHorn()
+    public void Jump()
     {
-        Sound s = Array.Find(Sounds, Sound => Sound.Name == "CarHorn");
-        if(s != null)
-        {
-            s.source.volume = 250;
-            s.source.PlayOneShot(s.source.clip);
-        }
-    }
-    public void Cat()
-    {
-        Sound s = Array.Find(Sounds, Sound => Sound.Name == "Cat");
-        if(s != null)
-            s.source.PlayOneShot(s.source.clip);
-    }
-    public void Coin()
-    {
-        Sound s = Array.Find(Sounds, Sound => Sound.Name == "Coin");
+        Sound s = Array.Find(Sounds, Sound => Sound.Name == "Jump");
         if(s != null)
             s.source.PlayOneShot(s.source.clip);
     }
@@ -93,11 +70,22 @@ public class MusicScr : MonoBehaviour
             }
         }  
     }
-    public void Dog()
+    public void MenuSong(string Play)
     {
-        Sound s = Array.Find(Sounds, Sound => Sound.Name == "Dog");
+        Sound s = Array.Find(Sounds, Sound => Sound.Name == "Menu");
+        s.source.outputAudioMixerGroup = MasterGroup; 
         if(s != null)
-            s.source.PlayOneShot(s.source.clip);
+        {
+            if(Play == "Play")
+            {
+                s.source.Play();
+                s.source.loop = true;
+            }
+            else if (Play == "Stop")
+            {
+                s.source.Stop();
+            }
+        }  
     }
 
     public void SetVolume (float volume)

@@ -17,4 +17,4 @@ MonoBehaviour:
   CheckPointCounter: 0
   CrowdCounter: 0
   CollidersCount: 0
-  VolumeLock: -22.86
+  VolumeLock: 0

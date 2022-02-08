@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class EventsScr : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class EventsScr : MonoBehaviour
     MusicScr musicScr;
     bool PlayLastSong;
     float DistanceWithPlayer;
+    public Slider VolumeSlider;
     
     
     void Start()
@@ -39,6 +41,7 @@ public class EventsScr : MonoBehaviour
         RestartBool = false;
         creditsScr = GetComponent<CreditsScr>();  
         musicScr = GetComponent<MusicScr>();
+        musicScr.GameSong("Play");
         shootScr.CanShoot = true;
         PlayLastSong = false;     
         if(Level1.activeSelf)
@@ -55,6 +58,8 @@ public class EventsScr : MonoBehaviour
         {
             DistanceWithPlayer = Vector2.Distance(BandPos.position,PlayerPos.position);
             float MusicVolume = (DistanceWithPlayer / 2) * -1;
+            if(MusicVolume < -20)
+                MusicVolume = -20;
             musicScr.Mixer.SetFloat("YobVolume",MusicVolume); 
         }           
     } 
@@ -148,6 +153,7 @@ public class EventsScr : MonoBehaviour
             yield return new WaitForSeconds(3);
             CamAnimator.SetBool("ShakeLoop", false);
             TileBlock.SetActive(false);
+            musicScr.GameSong("Stop");
             musicScr.YobSong("Play");
             PlayLastSong = true;
         }
@@ -165,7 +171,8 @@ public class EventsScr : MonoBehaviour
             RestartBool = true;
             GameOverPlayerAnimator.SetTrigger("Restart");
             GameOverAnimator.SetTrigger("Restart");
-            
+            allData.VolumeLock = VolumeSlider.value;
+
             StartCoroutine(WaitForGameOver());
             IEnumerator WaitForGameOver()
             {

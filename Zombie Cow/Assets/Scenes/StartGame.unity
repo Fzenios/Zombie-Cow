@@ -168,8 +168,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Sounds:
-  - Name: Yob
-    Clip: {fileID: 8300000, guid: 911a12f8418fee34781235ae0a39fa4d, type: 3}
+  - Name: Menu
+    Clip: {fileID: 8300000, guid: f089ff3536539814d9f924da682c19e0, type: 3}
     source: {fileID: 0}
   MasterGroup: {fileID: 24300002, guid: a3cb13294db8e1e44966803094365c36, type: 2}
   YobGroup: {fileID: -307710287942449383, guid: a3cb13294db8e1e44966803094365c36, type: 2}
@@ -190,6 +190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allData: {fileID: 11400000, guid: 0fc021d73dd020e4a93099a578345f40, type: 2}
   VolumeSlider: {fileID: 2093459825}
+  Mixer: {fileID: 24100000, guid: a3cb13294db8e1e44966803094365c36, type: 2}
 --- !u!1 &215169434
 GameObject:
   m_ObjectHideFlags: 0

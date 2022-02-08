@@ -24,6 +24,7 @@ public class PlayerMovementScr : MonoBehaviour
     int JumpCounter;
     public bool CanMove;
     public AllData allData;
+    public MusicScr musicScr;
     
     void Start()
     {
@@ -50,15 +51,15 @@ public class PlayerMovementScr : MonoBehaviour
                     if(JumpCounter == 0)
                         animator.SetTrigger("JumpTr"); 
 
-                    JumpCounter++;
-                    
+                    JumpCounter++; 
+                    if(JumpCounter < 2)
+                        musicScr.Jump();
                 }
                 
                 if(Input.GetKey(KeyCode.Space) && !isDashing)
                 { 
                     if(JumpCounter < 2)
                     {
-                        
                         if(JumpResetCur <= JumpReset)
                         {
                             PlayerRb.velocity = new Vector2(PlayerRb.velocity.x, JumpSpeed);
@@ -85,7 +86,7 @@ public class PlayerMovementScr : MonoBehaviour
                 {
                     transform.localScale = new Vector3(-4,4,0);
                     Dir = -1;  
-                } 
+                }  
             }
         }
 
@@ -114,8 +115,11 @@ public class PlayerMovementScr : MonoBehaviour
             if(CanMove)
             {
                 if(!isDashing && !EnemyPushed)
-                {
-                    PlayerRb.velocity = new Vector2(Movement * MoveSpeed, PlayerRb.velocity.y); 
+                {   
+                    if(Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
+                        PlayerRb.velocity = new Vector2(0, PlayerRb.velocity.y); 
+                    else 
+                        PlayerRb.velocity = new Vector2(Movement * MoveSpeed, PlayerRb.velocity.y); 
                 }
             }
             else
